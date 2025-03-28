@@ -62,7 +62,7 @@ a {
 }
 
 .hiring {
-    background-color: red;
+    background-color: #159957;
     width: fit-content;
     border-radius: 25px;
     border-color: gray;
@@ -70,6 +70,10 @@ a {
     border-style: solid;
     padding: 10px;
     font-size: larger;
+    color: black;
+}
+
+.hiring a {
     color: black;
 }
 
