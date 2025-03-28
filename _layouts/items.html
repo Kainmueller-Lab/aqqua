@@ -28,11 +28,11 @@
       <!-- {% for page in site.html_pages %} -->
       <!-- <a class="btn" href={{ page.filename }}>{{ page.title }}</a> -->
       <!-- {% endfor %} -->
-      <a class="btn" href=index>Home</a>
-      <a class="btn" href=news>News</a>
-      <a class="btn" href=about_us>About us</a>
-      <a class="btn" href=research>Research</a>
-      <!-- <a class="btn" href=publications>Publications</a> -->
+      <a class="btn" href={{ 'index' | relative_url }}>Home</a>
+      <a class="btn" href={{ 'news' | relative_url }}>News</a>
+      <a class="btn" href={{ 'about_us' | relative_url }}>About us</a>
+      <a class="btn" href={{ 'research' | relative_url }}>Research</a>
+      <!-- <a class="btn" href={{ 'publications' | relative_url }}>Publications</a> -->
     </header>
 
     <main id="content" class="main-content" role="main">
@@ -45,7 +45,7 @@
 	{% for post in site.posts %}
 	<li>
 	  {{ post.date | date: "%-d %B %Y" }}: {{ post.title }}<br>
-	  <a href="{{ post.url }}">
+	  <a href="{{ post.url | relative_url }}">
 	  {{ post.excerpt | markdownify | strip_html | truncatewords: 50 }}
 	  </a>
 	</li>
