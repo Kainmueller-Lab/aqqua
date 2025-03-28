@@ -16,7 +16,18 @@
     <header class="page-header" role="banner">
       <h1 class="project-name">{{ site.title | default: site.github.repository_name }}</h1>
       <h2 class="project-tagline">{{ site.description | default: site.github.project_tagline }}</h2>
+      <!-- {% if site.github.is_project_page %} -->
+        <!-- <a href="{{ site.github.repository_url }}" class="btn">View on GitHub</a> -->
+        <!-- {% assign full_repository_url = site.github.repository_url | append: '/' | append: site.github.source.branch %} -->
+        <!-- <a href="{{ full_repository_url }}" class="btn">View on GitHub</a> -->
+      <!-- {% endif %} -->
+      <!-- {% if site.show_downloads %} -->
+	<!-- <a href="{{ site.github.zip_url }}" class="btn">Download Dataset</a> -->
+      <!-- {% endif %} -->
 
+      <!-- {% for page in site.html_pages %} -->
+      <!-- <a class="btn" href={{ page.filename }}>{{ page.title }}</a> -->
+      <!-- {% endfor %} -->
       <a class="btn" href=/index>Home</a>
       <a class="btn" href=/news>News</a>
       <a class="btn" href=/about_us>About us</a>
@@ -29,8 +40,17 @@
       <div class="hiring"> <a href="/open_positions">>>We're hiring!<< </a></div>
       {% endunless %}
 
-      {{ content }}
-
+      <h1>News:</h1>
+      <ul>
+	{% for post in site.posts %}
+	<li>
+	  {{ post.date | date: "%-d %B %Y" }}: {{ post.title }}<br>
+	  <a href="{{ post.url }}">
+	  {{ post.excerpt | markdownify | strip_html | truncatewords: 50 }}
+	  </a>
+	</li>
+	{% endfor %}
+      </ul>
       <footer class="site-footer">
         <!-- {% if site.github.is_project_page %} -->
         <!--   <span class="site-footer-owner"><a href="{{ site.github.repository_url }}">{{ site.github.repository_name }}</a> is maintained by <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a>.</span> -->

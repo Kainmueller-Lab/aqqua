@@ -38,8 +38,8 @@ theme: jekyll-theme-cayman
 plugins:
   - jekyll-feed
 
-
-show_downloads: true
+excerpt_separator: <!--end_excerpt-->
+show_downloads: false
 
 # to override urls supplied by github
 github:

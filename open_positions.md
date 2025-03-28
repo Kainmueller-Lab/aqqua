@@ -57,7 +57,7 @@ MDC values diversity and is committed to fostering an inclusive, fair and open e
 
 
 ### Application:
-Please use our [online portal](https://recruitingapp-5471.de.umantis.com/Vacancies/1084/Application/New) and submit your application including a cover letter, CV (without photo, age and information about your family status), transcripts of record and other relevant documentation.
+Please use our [online portal](https://recruitingapp-5471.de.umantis.com/Vacancies/1084/Application/CheckLogin?lang=eng) and submit your application including a cover letter, CV (without photo, age and information about your family status), transcripts of record and other relevant documentation.
 
 For applicants for a PhD position: If you have a foreign degree, please submit proof of the recognition of your Master's degree in Germany with your application. The proof can be determined via the anabin database and can be submitted as a PDF attachment to the application. Further information can be found at Recognition of Degrees and Achievments.
 
