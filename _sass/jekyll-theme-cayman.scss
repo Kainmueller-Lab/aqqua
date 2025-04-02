@@ -74,15 +74,18 @@ a {
 }
 
 .team_image {
-    height: 12em;
+    position: relative;
 }
 
 .team_image img {
-    min-width: 200px;
 }
 
 .team_image_copyright {
     font-size: 66%;
+    color: white;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
 }
 
 .float_team {
