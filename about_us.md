@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: team
 title: About us
 ---
 
