@@ -45,9 +45,9 @@
 	{% for member in site.data.team.lead_pis %}
 	<div class="float_team-item">
 	  {% if member.picture == nil %}
-	  <img class="team_image" src="/assets/unknown.png" alt="no image available">
+	  <img class="team_image" src={{ '/assets/unknown.png' | relative_url }} alt="no image available">
 	    {% else %}
-	  <img class="team_image" src={{ '/assets/' | append: member.picture }} alt={{ 'image:' | append: member.first_name | append: member.last_name }}">
+	  <img class="team_image" src={{ '/assets/' | append: member.picture  | relative_url }} alt={{ 'image: ' | append: member.first_name | append: member.last_name }}">
 	    {% endif %}
 
 	  <ul>
@@ -66,9 +66,9 @@
 	{% for member in site.data.team.team %}
 	<div class="float_team-item">
 	  {% if member.picture == nil %}
-	  <img class="team_image" src="/assets/unknown.png" alt="no image available">
+	  <img class="team_image" src={{ '/assets/unknown.png' | relative_url }} alt="no image available">
 	    {% else %}
-	  <img class="team_image" src={{ '/assets/' | append: member.picture }} alt={{ 'image:' | append: member.first_name | append: member.last_name }}">
+	  <img class="team_image" src={{ '/assets/' | append: member.picture | relative_url  }} alt={{ 'image:' | append: member.first_name | append: member.last_name }}">
 	    {% endif %}
 
 	  <ul>
@@ -85,9 +85,9 @@
 	{% for member in site.data.team.contributors %}
 	<div class="float_team-item">
 	  {% if member.picture == nil %}
-	  <img class="team_image" src="/assets/unknown.png" alt="no image available">
+	  <img class="team_image" src={{ '/assets/unknown.png' | relative_url }} alt="no image available">
 	    {% else %}
-	  <img class="team_image" src={{ '/assets/' | append: member.picture }} alt={{ 'image:' | append: member.first_name | append: member.last_name }}">
+	  <img class="team_image" src={{ '/assets/' | append: member.picture | relative_url  }} alt={{ 'image:' | append: member.first_name | append: member.last_name }}">
 	    {% endif %}
 
 	  <ul>
