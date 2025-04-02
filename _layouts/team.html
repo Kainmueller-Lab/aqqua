@@ -44,12 +44,16 @@
 	<h1>Lead PIs:</h1>
 	{% for member in site.data.team.lead_pis %}
 	<div class="float_team-item">
+	  <div class="team_image">
 	  {% if member.picture == nil %}
-	  <img class="team_image" src={{ '/assets/unknown.png' | relative_url }} alt="no image available">
+	  <img src={{ '/assets/unknown.png' | relative_url }} alt="no image available">
 	    {% else %}
-	  <img class="team_image" src={{ '/assets/' | append: member.picture  | relative_url }} alt={{ 'image: ' | append: member.first_name | append: member.last_name }}">
+	  <img src={{ '/assets/' | append: member.picture  | relative_url }} alt={{ 'image: ' | append: member.first_name | append: member.last_name }}">
+	    {% unless member.picture_copyright == nil %}
+            <span class="team_image_copyright">{{ member.picture_copyright }}</span>
+            {% endunless %}
 	    {% endif %}
-
+	  </div>
 	  <ul>
 	    <li>{{ member.title }} {{ member.first_name }} {{ member.last_name }}</li>
 	    <li>{{ member.position }}</li>
