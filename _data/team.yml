@@ -1,5 +1,5 @@
 ---
-lead_pis:
+"Lead PIs":
 
         - first_name: "Dagmar"
           last_name: "Kainmüller"
@@ -35,7 +35,7 @@ lead_pis:
           affiliation: "Helmholtz-Zentrum Hereon"
           expertise: "Biological Oceanography"
 
-team:
+"Project Team":
 
         - first_name: "Peter"
           last_name: "Hirsch"
@@ -43,6 +43,7 @@ team:
           position: "Co-Lead MDC Team"
           affiliation: "Max Delbrück Center for Molecular Medicine in the Helmholtz Association (MDC), Helmholtz Imaging"
           expertise: "scalable AI methods"
+          picture: "Peter_Hirsch.png"
 
         - first_name: "Lisa"
           last_name: "Mais"
@@ -73,7 +74,7 @@ team:
           expertise: "AI methods"
 
 
-contributors:
+"Contributors":
         - first_name: "Christian"
           last_name: "Schiffer"
           title: "Dr."

@@ -108,9 +108,9 @@ a {
     min-width: 10em;
 }
 
-.team li {
-    float: left;
-    list-style-type: upper-roman;
+.float_team ul {
+    list-style-position: inside;
+    padding-left: 0;
 }
 
 .hiring a {

@@ -28,15 +28,16 @@
       <div class="hiring"> <a href="open_positions">>>We're hiring!<< </a></div>
       {% endunless %}
 
+      {% for team in site.data.team %}
       <div class="float_team">
-	<h1>Lead PIs:</h1>
-	{% for member in site.data.team.lead_pis %}
+	<h1>{{ team[0] }}:</h1>
+	{% for member in team[1] %}
 	<div class="float_team-item">
 	  <div class="team_image">
-	  {% if member.picture == nil %}
-	  <img src={{ '/assets/unknown.png' | relative_url }} alt="no image available">
-	    {% else %}
-	  <img src={{ '/assets/' | append: member.picture  | relative_url }} alt={{ 'image: ' | append: member.first_name | append: member.last_name }}">
+	    {% if member.picture == nil %}
+	    <img src={{ '/assets/unknown.png' | relative_url }} alt="no image available">
+	      {% else %}
+	    <img src={{ '/assets/' | append: member.picture  | relative_url }} alt={{ 'image: ' | append: member.first_name | append: member.last_name }}">
 	    {% unless member.picture_copyright == nil %}
             <span class="team_image_copyright">{{ member.picture_copyright }}</span>
             {% endunless %}
@@ -50,48 +51,7 @@
 	</div>
 	{% endfor %}
       </div>
-
-
-      <div class="float_team">
-	<h1>Project team:</h1>
-	{% for member in site.data.team.team %}
-	<div class="float_team-item">
-	  {% if member.picture == nil %}
-	  <img class="team_image" src={{ '/assets/unknown.png' | relative_url }} alt="no image available">
-	    {% else %}
-	  <img class="team_image" src={{ '/assets/' | append: member.picture | relative_url  }} alt={{ 'image:' | append: member.first_name | append: member.last_name }}">
-	    {% endif %}
-
-	  <ul>
-	    <li>{{ member.title }} {{ member.first_name }} {{ member.last_name }}</li>
-	    <li>{{ member.position }}</li>
-	    <li>{{ member.affiliation }}</li>
-	  </ul>
-	</div>
-	{% endfor %}
-      </div>
-
-      <div class="float_team">
-	<h1>Contributors:</h1>
-	{% for member in site.data.team.contributors %}
-	<div class="float_team-item">
-	  {% if member.picture == nil %}
-	  <img class="team_image" src={{ '/assets/unknown.png' | relative_url }} alt="no image available">
-	    {% else %}
-	  <img class="team_image" src={{ '/assets/' | append: member.picture | relative_url  }} alt={{ 'image:' | append: member.first_name | append: member.last_name }}">
-	    {% endif %}
-
-	  <ul>
-	    <li>{{ member.title }} {{ member.first_name }} {{ member.last_name }}</li>
-	    <li>{{ member.position }}</li>
-	    <li>{{ member.affiliation }}</li>
-	  </ul>
-	</div>
-	{% endfor %}
-      </div>
-
-
-      <br>
+      {% endfor %}
 
       <footer class="site-footer">
 
