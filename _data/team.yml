@@ -55,10 +55,11 @@
 
         - first_name: "Martin"
           last_name: "Schröder"
-          title: "Dr."
+          title: "Dr.-Ing."
           position: "PostDoc"
           affiliation: "GEOMAR Helmholtz Centre for Ocean Research Kiel"
           expertise: "Pelagic Imaging, Domain AI"
+          picture: "Martin_Schroeder_2_square.jpg"
 
         - first_name: "Ankita"
           last_name: "Vaswani"
