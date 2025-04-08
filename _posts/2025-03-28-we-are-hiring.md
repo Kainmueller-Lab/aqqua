@@ -7,4 +7,4 @@ We are looking for a PhD student or PostDoc or Research Software Engineer to joi
 
 <!--end_excerpt-->
 
-**[>>More information](/open_positions)**
+**[>>More information]({{ 'open_positions' | relative_url }})**
