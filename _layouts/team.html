@@ -27,7 +27,7 @@
 
   <main id="content" class="main-content" role="main">
     {% unless page.name == "open_positions.md" %}
-    <div class="hiring"> <a href="open_positions">>>We're hiring!<< </a>
+    <div class="hiring"> <a href={{ 'open_positions' | relative_url }}>>>We're hiring!<< </a>
     </div>
     {% endunless %}
 
