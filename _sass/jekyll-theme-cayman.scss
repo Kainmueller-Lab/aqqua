@@ -61,18 +61,6 @@ a {
   }
 }
 
-.hiring {
-    background-color: #159957;
-    width: fit-content;
-    border-radius: 25px;
-    border-color: gray;
-    border-width: 3px;
-    border-style: solid;
-    padding: 10px;
-    font-size: larger;
-    color: black;
-}
-
 .team_image {
     position: relative;
 }
@@ -113,53 +101,70 @@ a {
     padding-left: 0;
 }
 
-.hiring a {
-    color: black;
-}
+.btn, .hiring_btn, .data_collecting_btn {
+    display: inline-block;
+    margin-bottom: 1rem;
+    color: rgba(255, 255, 255, 1.0);
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.85);
+    border-style: solid;
+    border-width: 0.2em;
+    border-radius: 0.3rem;
+    transition: color 0.2s, background-color 0.2s, border-color 0.2s;
+    font-weight: bold;
 
-.btn {
-  display: inline-block;
-  margin-bottom: 1rem;
-  color: rgba(255, 255, 255, 1.0);
-  background-color: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.85);
-  border-style: solid;
-  border-width: 0.15em;
-  border-radius: 0.3rem;
-  transition: color 0.2s, background-color 0.2s, border-color 0.2s;
-  font-weight: bold;
-
-  &:hover {
-    color: rgba(255, 255, 255, 0.8);
-    text-decoration: none;
-    background-color: rgba(255, 255, 255, 0.3);
-    border-color: rgba(255, 255, 255, 1.0);
-  }
-
-  + .btn {
-    margin-left: 1rem;
-  }
-
-  @include large {
-    padding: 0.75rem 1rem;
-  }
-
-  @include medium {
-    padding: 0.6rem 0.9rem;
-    font-size: 0.9rem;
-  }
-
-  @include small {
-    display: block;
-    width: 100%;
-    padding: 0.75rem;
-    font-size: 0.9rem;
+    &:hover {
+	color: rgba(255, 255, 255, 0.8);
+	text-decoration: none;
+	background-color: rgba(255, 255, 255, 0.3);
+	border-color: rgba(255, 255, 255, 1.0);
+    }
 
     + .btn {
-      margin-top: 1rem;
-      margin-left: 0;
+	margin-left: 1rem;
     }
-  }
+
+    @include large {
+	padding: 0.75rem 1rem;
+    }
+
+    @include medium {
+	padding: 0.6rem 0.9rem;
+	font-size: 0.9rem;
+    }
+
+    @include small {
+	display: block;
+	width: 100%;
+	padding: 0.75rem;
+	font-size: 0.9rem;
+
+	+ .btn {
+	    margin-top: 1rem;
+	    margin-left: 0;
+	}
+    }
+}
+
+.hiring_btn {
+    background-color: rgba(24, 160, 96, 1.0);
+
+    &:hover {
+	color: black;
+	background-color: rgba(24, 160, 96, 0.4);
+	border-color: rgba(24, 160, 96, 1.0);
+    }
+}
+
+.data_collecting_btn {
+    background-color: rgba(24, 0, 96, 1.0);
+    float: right;
+
+    &:hover {
+	color: black;
+	background-color: rgba(24, 0, 96, 0.4);
+	border-color: rgba(24, 0, 96, 1.0);
+    }
 }
 
 .page-header {
