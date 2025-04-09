@@ -69,6 +69,13 @@
           expertise: "Pelagic Imaging, Domain AI"
           picture: "Ankita_Vaswani.jpg"
 
+        - first_name: "Riccardo"
+          last_name: "Massei"
+          title: "Dr."
+          position: "PostDoc"
+          affiliation: "Helmholtz Centre for Environmental Research (UFZ)"
+          expertise: "FAIR data management"
+
         - first_name: "Christina"
           last_name: "Hübers"
           title: ""
