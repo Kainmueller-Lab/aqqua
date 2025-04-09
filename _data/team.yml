@@ -91,6 +91,7 @@
           position: "Contributing PI HPC"
           affiliation: "Forschungszentrum Jülich (FZJ)"
           expertise: "HPC, image analysis"
+          picture: "Christian_Schiffer.jpg"
 
         - first_name: "David"
           last_name: "Greenberg"
@@ -161,6 +162,7 @@
           position: "Contributing PI"
           affiliation: "Helmholtz Centre for Environmental Research (UFZ)"
           expertise: "Freshwater ecology"
+          picture: "Susanne_Dunker.jpg"
 
         - first_name: "Fabian"
           last_name: "Isensee"
