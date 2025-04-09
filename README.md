@@ -39,7 +39,7 @@ title: Title of page
 
 Layout definitions are located in `_layouts`.
 Each layout can inherit from other layouts. For example the `team` layout inherits from the `default` layout. Inheritance in this case means that the 
-{% raw %}
+<!-- {% raw %} -->
 `{{ content }}`
-{% endraw %}
+<!-- {% endraw %} -->
 tag in the `default` layout is replaced by whatever is defined in the `team` layout.
