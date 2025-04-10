@@ -27,6 +27,7 @@
           position: "Lead PI HPC"
           affiliation: "Forschungszentrum Jülich (FZJ)"
           expertise: "Large-scale scientific image data"
+          picture: "Timo_Dickscheid.png"
 
         - first_name: "Klas Ove"
           last_name: "Möller"
