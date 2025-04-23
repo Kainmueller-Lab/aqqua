@@ -27,11 +27,11 @@
 
     <main id="content" class="main-content" role="main">
       {% unless page.name == "open_positions.md" %}
-      <a class="hiring_btn" href={{ 'open_positions' | relative_url }}>>>We're hiring!<< </a>
+      <a class="hiring_btn" href={{ 'open_positions' | relative_url }}>We're hiring! </a>
       {% endunless %}
 
       {% unless page.name == "data_collection.md" %}
-      <a class="data_collecting_btn" href={{ 'data_collection' | relative_url }}>>>We're collecting data!<< </a>
+      <a class="data_collecting_btn" href={{ 'data_collection' | relative_url }}>We're collecting data! </a>
       {% endunless %}
 
       {{ content }}
