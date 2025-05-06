@@ -5,7 +5,7 @@ filename: about_plankton
 ---
 Plankton are diverse, drifting organisms that are crucial members of aquatic foodwebs. Marine and freshwater foodwebs are essential to human well-being as they generate > 50% of atmospheric oxygen and about one third of the meat consumed by humans. The critical role of plankton in conservation of aquatic biodiversity and human nutrition needs to be understood and the knowledge used to serve decision making in the face of global change.
 
-![Plankton image](./assets/plankton/really_fancy_plankton.jpeg)
+![Plankton image](./assets/plankton/pluteus.jpeg)
 
 In addition to sustaining aquatic life, plankton activity and debris sustainably sequester vast amounts of carbon from the atmosphere to the ocean’s interior. Atmospheric C02 would be 200 ppm higher without the existence of the plankton-driven biological carbon pump. This pump sequesters about 6 GtC per year to the oceans interior, which is approximately equal to all fossil fuel emissions. The efficiency of this biological carbon pump is likely altered by climatic changes that affect planktonic diversity. 
 
