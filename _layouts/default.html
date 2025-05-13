@@ -27,13 +27,20 @@
     </header>
 
     <main id="content" class="main-content" role="main">
-      {% unless page.name == "open_positions.md" %}
+      <div class="btn_justify">
+      {% unless true or page.name == "open_positions.md" %}
+	<!-- change unless true to unless false to enable -->
+      <div>
       <a class="hiring_btn" href={{ 'open_positions' | relative_url }}>We're hiring! </a>
+      </div>
       {% endunless %}
 
       {% unless page.name == "data_collection.md" %}
+      <div>
       <a class="data_collecting_btn" href={{ 'data_collection' | relative_url }}>We're collecting data! </a>
+      </div>
       {% endunless %}
+      </div>
 
       {{ content }}
 

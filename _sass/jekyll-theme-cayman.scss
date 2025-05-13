@@ -101,6 +101,11 @@ a {
     padding-left: 0;
 }
 
+.btn_justify {
+    display: flex;
+    justify-content: space-around
+}
+
 .btn, .hiring_btn, .data_collecting_btn {
     display: inline-block;
     margin-bottom: 1rem;
@@ -158,7 +163,6 @@ a {
 
 .data_collecting_btn {
     background-color: rgba(24, 0, 96, 1.0);
-    float: right;
 
     &:hover {
 	color: black;
