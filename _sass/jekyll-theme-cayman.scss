@@ -61,6 +61,19 @@ a {
   }
 }
 
+.logo_header {
+    max-width: 50%;
+
+    @include small {
+	max-width: 100%;
+
+	+ .logo_header {
+	    margin-top: 1rem;
+	    margin-left: 0;
+	}
+    }
+}
+
 .team_image {
     position: relative;
     float: right;
