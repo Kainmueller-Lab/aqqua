@@ -13,4 +13,4 @@ We welcome data contributions to our training dataset. If you believe that your 
 
 We at AqQua are grateful for your support and will duly acknowledge each data contribution.
 
-<a class="data_collecting_btn" href="https://survey.hifis.dkfz.de/398984"> >> Data inquiry form </a>
+<a class="data_collecting_btn" href=""> >> Data inquiry form </a>
