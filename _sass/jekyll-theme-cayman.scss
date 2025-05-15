@@ -63,10 +63,31 @@ a {
 
 .team_image {
     position: relative;
+    float: right;
 }
 
 .team_image img {
+    max-width: 9em;
 }
+
+.team-item {
+    display: block;
+    clear: both;
+    margin-bottom: 1em;
+
+}
+
+.team-item .team_image img {
+    max-width: 10em;
+    float: left;
+    margin-bottom: 1em;
+}
+
+.team ul {
+    list-style-position: inside;
+    padding-left: 1em;
+}
+
 
 .team_image_copyright {
     font-size: 66%;
