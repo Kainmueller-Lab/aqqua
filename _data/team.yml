@@ -76,6 +76,7 @@
           position: "PostDoc"
           affiliation: "Helmholtz Centre for Environmental Research (UFZ)"
           expertise: "FAIR data management"
+          picture: "Riccardo_Massei.jpg"
 
         - first_name: "Christina"
           last_name: "Hübers"
@@ -83,6 +84,22 @@
           position: "PhD student"
           affiliation: "Max Delbrück Center for Molecular Medicine in the Helmholtz Association (MDC), Helmholtz Imaging"
           expertise: "AI methods"
+
+        - first_name: "Johann"
+          last_name: "Schulze Tast"
+          title: ""
+          position: "Student assistant and MSc student"
+          affiliation: "Hasso-Plattner-Institut (HPI)"
+          picture: "Johann_Schulze_Tast.jpg"
+
+        - first_name: "Nick"
+          last_name: "Lechtenbörger"
+          title: ""
+          position: "Student assistant and MSc student"
+          affiliation: "Hasso-Plattner-Institut (HPI)"
+          picture: "Nick_Lechtenboerger.jpg"
+
+
 
 
 "Contributors":

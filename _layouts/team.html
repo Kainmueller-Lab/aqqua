@@ -46,7 +46,7 @@ layout: default
     <ul>
       <li>{{ member.title }} {{ member.first_name }} {{ member.last_name }}</li>
       <li>{{ member.position }}</li>
-      <li>{{ member.expertise }}</li>
+      {% unless member.expertise == nil %}<li>{{ member.expertise }}</li>{% endunless %}
       <li>{{ member.affiliation }}</li>
     </ul>
   </div>
