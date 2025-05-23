@@ -99,7 +99,19 @@
           affiliation: "Hasso-Plattner-Institut (HPI)"
           picture: "Nick_Lechtenboerger.jpg"
 
+        - first_name: "Oliver"
+          last_name: "Schulz"
+          title: ""
+          position: "Student assistant and MSc student"
+          affiliation: "Hasso-Plattner-Institut (HPI)"
+          # picture: "Oliver_Schulz.jpg"
 
+        - first_name: "Florian"
+          last_name: "Müller"
+          title: ""
+          position: "MSc student"
+          affiliation: "Hasso-Plattner-Institut (HPI)"
+          # picture: "Florian_Mueller.jpg"
 
 
 "Contributors":
