@@ -3,8 +3,6 @@ layout: default
 title: Data Collection
 ---
 
-
-
 The goal of the AqQua project is to:
 
 - Build an AI foundation model of plankton image data,
@@ -23,7 +21,7 @@ As production-run foundation model training will commence this fall, **the deadl
 
 **To participate, please carefully read and fill the online form below**. Note, some filling instructions and exemplary answers are provided via mouseover questionmarks. After clicking the "Submit" button at the end of the form, you will receive an email with your filled form for your records.
 
-Should you have any questions or suggestions, please do not hesitate to contact us at [aqqua@geomar.de](mailto:aqqua@geomar.de). We would be stoked to have you on board!
+Should you have any questions or suggestions, please check our **[FAQ]({{ 'data_collection_faq' | relative_url }})** or contact us at [aqqua@geomar.de](mailto:aqqua@geomar.de). We would be happy to have you on board!
 
 
 
