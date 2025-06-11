@@ -27,10 +27,7 @@ As production-run foundation model training will commence this fall, **the deadl
 
 Should you have any questions or suggestions, please check our **[FAQ]({{ 'data_collection_faq' | relative_url }})** or contact us at [aqqua@geomar.de](mailto:aqqua@geomar.de). We would be happy to have you on board!
 
-
-
 <!-- The Aquatic Life Foundation project (AqQua) aims to compile multimodal image datasets from contributing Helmholtz Centres, national and international partners to train a unified, accessible plankton image recognition model to help monitor and understand the health of our oceans. Vast contributions from the global community will complement data originating from Helmholtz centers and diverse, multimodal composition of the training data will ensure generalizability and performance of the AqQua Foundation Model. -->
-
 
 <!-- Plot of how much data we collected so far and how much data we want to collect  -->
 
@@ -41,3 +38,12 @@ Should you have any questions or suggestions, please check our **[FAQ]({{ 'data_
 <a class="data_collecting_btn" href="https://survey.hifis.dkfz.de/398984?lang=en"> >> Data inquiry form </a>
 
 <script src="/assets/progress.js"></script>
+<script>
+(function () {
+  // Total number of images (in millions) and number of images acquired so far
+  const { acquired, total } = window.progressData;
+  const bar = document.getElementById("progressBar");
+  bar.style.width = (100 * acquired) / total + "%";
+  bar.textContent = acquired + "M";
+})();
+</script>

@@ -11,7 +11,9 @@
   height: 100%;
   background: #4caf50;
   text-align: center;
-  color: white;
+  /* color: black; */
   line-height: 30px;
   transition: width 0.3s ease;
+  overflow: visible;
+  text-wrap: nowrap;
 }
