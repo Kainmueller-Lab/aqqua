@@ -37,7 +37,6 @@ Should you have any questions or suggestions, please check our **[FAQ]({{ 'data_
 
 <a class="data_collecting_btn" href="https://survey.hifis.dkfz.de/398984?lang=en"> >> Data inquiry form </a>
 
-<script src="/assets/progress.js"></script>
 <script>
 (function () {
   // Total number of images (in millions) and number of images acquired so far
