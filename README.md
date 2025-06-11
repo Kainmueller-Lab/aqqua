@@ -50,4 +50,13 @@ tag in the `default` layout is replaced by whatever is defined in the `team` lay
 
 ### How to update the data collection progress bar
 
-Update the numbers in [assets/progress.js].
+Update the numbers in [assets/progress.js](assets/progress.js).
+
+```js
+window.progressData = {
+  // Number of acquired images (in millions)
+  acquired: 123,
+  // Targeted number of images (in millions)
+  total: 3000,
+};
+```
