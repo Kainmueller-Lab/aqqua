@@ -1,4 +1,4 @@
 window.progressData = {
-  progress: 123,
+  acquired: 123,
   total: 3000,
 };
