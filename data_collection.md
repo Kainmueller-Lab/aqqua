@@ -3,6 +3,10 @@ layout: default
 title: Data Collection
 ---
 
+<div id="progressBarContainer">
+    <div id="progressBar">0%</div>
+</div>
+
 The goal of the AqQua project is to:
 
 - Build an AI foundation model of plankton image data,
@@ -35,3 +39,5 @@ Should you have any questions or suggestions, please check our **[FAQ]({{ 'data_
 <!-- We at AqQua are grateful for your support and will duly acknowledge each data contribution. -->
 
 <a class="data_collecting_btn" href="https://survey.hifis.dkfz.de/398984?lang=en"> >> Data inquiry form </a>
+
+<script src="/assets/progress.js"></script>
