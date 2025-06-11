@@ -70,6 +70,14 @@
           expertise: "Pelagic Imaging, Domain AI"
           picture: "Ankita_Vaswani.jpg"
 
+        - first_name: "Joelle"
+          last_name: "Habib"
+          title: "Dr."
+          position: "PostDoc"
+          affiliation: "Laboratoire d'océanographie de Villefranche sur mer/ GEOMAR Helmholtz Centre for Ocean Research Kiel"
+          expertise: "Pelagic Imaging, Biogeochemical Modeling"
+          picture: "Joelle_Habib.jpg"
+
         - first_name: "Riccardo"
           last_name: "Massei"
           title: "Dr."
