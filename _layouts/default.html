@@ -41,6 +41,12 @@
       <a class="data_collecting_btn" href={{ 'data_collection' | relative_url }}>We're collecting data! </a>
       </div>
       {% endunless %}
+
+      {% unless page.name != "data_collection.md" %}
+      <div>
+      <a class="data_collecting_btn" href="https://survey.hifis.dkfz.de/398984?lang=en"> >> Data inquiry form </a>
+      </div>
+      {% endunless %}
       </div>
 
       {{ content }}
