@@ -7,6 +7,8 @@ title: Data Collection
     <div id="progressBar">0%</div>
 </div>
 
+<a class="data_collecting_btn" href="https://survey.hifis.dkfz.de/398984?lang=en"> >> Data inquiry form </a>
+
 The goal of the AqQua project is to:
 
 - Build an AI foundation model of plankton image data,
