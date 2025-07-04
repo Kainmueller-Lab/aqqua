@@ -3,9 +3,11 @@ layout: default
 title: Data Collection
 ---
 
-<div id="progressBarContainer">
-    <div id="progressBar">0%</div>
-</div>
+<!-- <div id="progressBarContainer"> -->
+<!--     <div id="progressBar">0%</div> -->
+<!-- </div> -->
+
+![Data collection progress](./assets/data_collection_overview_20250704.png)
 
 The goal of the AqQua project is to:
 
