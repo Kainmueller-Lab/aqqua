@@ -3,11 +3,24 @@ layout: default
 title: Data Collection
 ---
 
-<!-- <div id="progressBarContainer"> -->
-<!--     <div id="progressBar">0%</div> -->
-<!-- </div> -->
+<span class="nojs"><em>Please enable javascript to see a more detailed plot of the current state of the data collection effort!</em><br><br>
+Overview of the images, split by instrument, already provided to the AqQua project so far:
+<img src="./assets/data_collection_overview_20250704.png" alt="Data collection prgoress">
+</span>
 
-![Data collection progress](./assets/data_collection_overview_20250704.png)
+<div style="display: flex;justify-content: center;">
+<canvas id="canvas" ></canvas>
+</div>
+
+<script>
+Array.from(
+    document.querySelectorAll(".nojs")
+).forEach(
+    node => node.remove()
+);
+</script>
+<script src=" https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.min.js "></script>
+<script src="./assets/progress.js"></script>
 
 The goal of the AqQua project is to:
 
@@ -38,13 +51,3 @@ Should you have any questions or suggestions, please check our **[FAQ]({{ 'data_
 <!-- We at AqQua are grateful for your support and will duly acknowledge each data contribution. -->
 
 <a class="data_collecting_btn" href="https://survey.hifis.dkfz.de/398984?lang=en"> >> Data inquiry form </a>
-
-<script>
-(function () {
-  // Total number of images (in millions) and number of images acquired so far
-  const { acquired, total } = window.progressData;
-  const bar = document.getElementById("progressBar");
-  bar.style.width = (100 * acquired) / total + "%";
-  bar.textContent = acquired + "M";
-})();
-</script>
