@@ -1,0 +1,20 @@
+# The Docker image that will be used to build your app
+image: ruby:3
+
+variables:
+  JEKYLL_ENV: production
+
+before_script:
+  - bundle install
+
+create-pages:
+  stage: deploy
+  pages:
+    # The folder that contains the files to be exposed at the Page URL
+    publish: public
+  script:
+    - bundle exec jekyll build -d public --config _config_gitlab.yml
+  rules:
+    # This ensures that only pushes to the default branch will trigger
+    # a pages deploy
+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
