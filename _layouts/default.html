@@ -14,7 +14,8 @@
     <a id="skip-to-content" href="#content">Skip to the content.</a>
 
     <header class="page-header" role="banner">
-      <h1 class="project-name">{{ site.title | default: site.github.repository_name }}</h1>
+      <h1 class="project-name"><img class="logo_header" src={{ '/assets/aqqua_logo_black_transparent.png' | relative_url }} alt="AqQua Logo"><br>The Aquatic Life Foundation Project</h1>
+      <!-- <h1 class="project-name">{{ site.title | default: site.github.repository_name }}</h1> -->
       <h2 class="project-tagline">{{ site.description | default: site.github.project_tagline }}</h2>
 
       <a class="btn" href={{ 'index' | relative_url }}>Home</a>
@@ -28,13 +29,26 @@
     </header>
 
     <main id="content" class="main-content" role="main">
-      {% unless page.name == "open_positions.md" %}
+      <div class="btn_justify">
+      {% unless true or page.name == "open_positions.md" %}
+	<!-- change unless true to unless false to enable -->
+      <div>
       <a class="hiring_btn" href={{ 'open_positions' | relative_url }}>We're hiring! </a>
+      </div>
       {% endunless %}
 
       {% unless page.name == "data_collection.md" %}
+      <div>
       <a class="data_collecting_btn" href={{ 'data_collection' | relative_url }}>We're collecting data! </a>
+      </div>
       {% endunless %}
+
+      {% unless page.name != "data_collection.md" %}
+      <div>
+      <a class="data_collecting_btn" href="https://survey.hifis.dkfz.de/398984?lang=en"> >> Data inquiry form </a>
+      </div>
+      {% endunless %}
+      </div>
 
       {{ content }}
 

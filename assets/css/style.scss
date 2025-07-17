@@ -1,7 +1,11 @@
 ---
 ---
-
 @import 'jekyll-theme-cayman';
+
+.page-header {
+    background-color: #000;
+    background-image: url("plankton3.png");
+  }
 
 details {
     margin-bottom: 1em;
@@ -29,3 +33,5 @@ details summary {
   details[open] summary::before {
     transform: rotate(90deg);
   }
+
+

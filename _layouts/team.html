@@ -3,6 +3,32 @@ layout: default
 ---
 
 {% for team in site.data.team %}
+{% if team[0] == "Contributors" %}
+<div class="team">
+  <h1>{{ team[0] }}:</h1>
+  <ul>
+  {% for member in team[1] %}
+    <div class="team-item">
+    <li> {{ member.title }} {{ member.first_name }} {{ member.last_name }}
+    <div class="team_image">
+      {% unless member.picture == nil %}
+        <img src={{ '/assets/' | append: member.picture | relative_url }} alt={{ 'image: ' | append: member.first_name | append: member.last_name }}">
+        {% unless member.picture_copyright == nil %}
+          <span class="team_image_copyright">{{ member.picture_copyright }}</span>
+        {% endunless %}
+      {% endunless %}
+    </div>
+      <ul>
+	<li>{{ member.position }}</li>
+	<li>{{ member.expertise }}</li>
+	<li>{{ member.affiliation }}</li>
+      </ul>
+    </li>
+      </div>
+  {% endfor %}
+  </ul>
+</div>
+{% else %}
 <div class="float_team">
   <h1>{{ team[0] }}:</h1>
   {% for member in team[1] %}
@@ -20,9 +46,11 @@ layout: default
     <ul>
       <li>{{ member.title }} {{ member.first_name }} {{ member.last_name }}</li>
       <li>{{ member.position }}</li>
+      {% unless member.expertise == nil %}<li>{{ member.expertise }}</li>{% endunless %}
       <li>{{ member.affiliation }}</li>
     </ul>
   </div>
   {% endfor %}
 </div>
+{% endif %}
 {% endfor %}

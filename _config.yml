@@ -27,7 +27,7 @@ description: >- # this means to ignore newlines until "baseurl:"
 # baseurl: "" # the subpath of your site, e.g. /blog
 # url: "" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: jekyllrb
-github_username:  jekyll
+github_username: jekyll
 # relative_url: "flylight_inst_seg_dataset"
 
 # Build settings
@@ -40,6 +40,7 @@ plugins:
 
 excerpt_separator: <!--end_excerpt-->
 show_downloads: false
+# future: true
 
 # to override urls supplied by github
 github:
