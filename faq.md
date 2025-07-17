@@ -23,7 +23,7 @@ A foundation model is a machine-learning model trained at scale, usually with se
 
 <details>
 <summary><strong>My data is on EcoTaxa, how can I share it with you?</strong></summary> 
-Please fill in the <a href="https://survey.hifis.dkfz.de/398984?lang=en">Data Sharing Form</a> and also provide view access to the aqqua@geomar.de user on EcoTaxa. This enables us to download your data. We will inform you once we downloaded your data. You can revoke the access anytime, if you would like/need to.
+Please fill in the <a href="https://survey.hifis.dkfz.de/398984?lang=en">Data Sharing Form</a> and also provide view access to the aqqua@geomar.de user on EcoTaxa. This enables us to download your data. We will inform you once we have downloaded your data, so that you can revoke access, if you would like to.
 </details>
 
 <details>
@@ -63,7 +63,7 @@ All kinds of labels/identification are welcome but optional, as we’re using se
 </details>
 
 <details>
-<summary><strong>Although I am the contact person of a project, it is not my decision to make if the data can be shared.How do I proceed?</strong></summary>
+<summary><strong>Although I am the contact person of a project, it is not my decision to make if the data can be shared. How do I proceed?</strong></summary>
   <p>
     You don’t have to make the decision yourself. Check with the principal investigator, data owner, or other relevant stakeholders before proceeding. Then, let us know.<br>
     Also, if your data is hosted on EcoTaxa, please make sure that you are correctly listed as the contact person of a project. If not, select the correct person in the EcoTaxa project settings:
