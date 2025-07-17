@@ -2,3 +2,30 @@
 ---
 
 @import 'jekyll-theme-cayman';
+
+details {
+    margin-bottom: 1em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 0.5em;
+    background: #f9f9f9;
+}
+
+
+details summary {
+    cursor: pointer;
+    position: relative;
+    padding-left: 1.2em;
+  }
+  
+  details summary::before {
+    content: "▶";
+    position: absolute;
+    left: 0;
+    transition: transform 0.2s;
+    font-size: 0.9em;
+  }
+  
+  details[open] summary::before {
+    transform: rotate(90deg);
+  }
