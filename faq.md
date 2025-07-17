@@ -70,6 +70,7 @@ All kinds of labels/identification are welcome but optional, as we’re using se
     <ul>
       <li>In the menu, select “Project / Edit project settings”.</li>
       <li>In the “Priviliges” tab, select the correct person as contact.</li>
+      <li>Click “Save”.</li>
     </ul>
   </p>
 </details>
