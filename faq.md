@@ -22,6 +22,11 @@ A foundation model is a machine-learning model trained at scale, usually with se
 </details>
 
 <details>
+<summary><strong>How can I transfer my data?</strong></summary>
+If your data is on Ecotaxa, you can provide us with view access (see next question for details). If you use web hosting services (AZURE, GLOBUS, ...), you can share your dataset via these. We also can download image data from IFCB dashboards. You could also send us a harddrive. Other options (e.g. FTP, ...) would also be possible. Please inform us about your preferred method via the <a href="https://survey.hifis.dkfz.de/398984?lang=en">Data Sharing Form</a>.
+</details>
+
+<details>
 <summary><strong>My data is on EcoTaxa, how can I share it with you?</strong></summary> 
 Please fill in the <a href="https://survey.hifis.dkfz.de/398984?lang=en">Data Sharing Form</a> and also provide view access to the aqqua@geomar.de user on EcoTaxa. This enables us to download your data. We will inform you once we have downloaded your data, so that you can revoke access, if you would like to.
 </details>
@@ -31,10 +36,6 @@ Please fill in the <a href="https://survey.hifis.dkfz.de/398984?lang=en">Data Sh
 You can download these <a href="https://codebase.helmholtz.cloud/aqqua-public/ecotaxa-tools">Python scripts</a> that use the EcoTaxa API to generate a list of your EcoTaxa projects. You can at any time, should you wish to, change the access rights for multiple projects in bulk via the EcoTaxa API.
 </details>
 
-<details>
-<summary><strong>My data is not on EcoTaxa, what now?</strong></summary>
-If you use web hosting services (AZURE, GLOBUS, ...), you can share your dataset via these. We also can download image data from IFCB dashboards. You could also send us a harddrive. Other options (e.g. FTP, ...) would also be possible. Please inform us about your preferred method via the <a href="https://survey.hifis.dkfz.de/398984?lang=en">Data Sharing Form</a>.
-</details>
 
 <details>
 <summary><strong>How is AqQua funded?</strong></summary>
