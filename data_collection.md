@@ -8,6 +8,11 @@ Overview of the images, split by instrument, already provided to the AqQua proje
 <img src="./assets/data_collection_overview_20250704.png" alt="Data collection prgoress">
 </span>
 
+<label>
+  <input type="checkbox" id="scaleToggle" />
+  Use Logarithmic Scale
+</label>
+
 <div style="display: flex;justify-content: center; min-width:720px; min-height:360px;">
 <canvas id="canvas"></canvas>
 </div>

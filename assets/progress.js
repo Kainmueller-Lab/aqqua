@@ -250,9 +250,17 @@ const colorList = [
   "#95DEE3",
 ];
 
+let labels = [];
+let datasets = [];
+let chartInstance = null;
+
+document.getElementById("scaleToggle").addEventListener("change", () => {
+  createChart(); // re-render on toggle
+});
+
 function padWithNulls(arr, targetLength) {
   return arr.concat(
-    new Array(Math.max(targetLength - arr.length, 0)).fill(null)
+    new Array(Math.max(targetLength - arr.length, 0)).fill(null),
   );
 }
 
@@ -264,8 +272,8 @@ fetch(`${folder}filelist.json`)
       sortedFiles.map((file) =>
         fetch(`${folder}${file}`)
           .then((res) => res.text())
-          .then((text) => ({ file, text }))
-      )
+          .then((text) => ({ file, text })),
+      ),
     );
   })
   .then((fileDataList) => {
@@ -325,79 +333,97 @@ fetch(`${folder}filelist.json`)
       };
     });
 
-    const config = {
-      type: "bar",
-      data: {
-        labels: labels,
-        datasets: datasets,
+    window.labels = labels;
+    window.datasets = datasets;
+    createChart(); // initial render
+  });
+
+// Chart creation function with toggle
+function createChart() {
+  const useLog = document.getElementById("scaleToggle").checked;
+
+  if (chartInstance) {
+    chartInstance.destroy();
+  }
+
+  const ctx = document.getElementById("canvas").getContext("2d");
+
+  chartInstance = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: window.labels,
+      datasets: window.datasets,
+    },
+    options: {
+      indexAxis: "x",
+      responsive: true,
+      plugins: {
+        title: {
+          display: true,
+          text: "Total number of images already provided to the AqQua Project so far, split by instrument",
+          font: {
+            size: 18,
+          },
+        },
       },
-      options: {
-        indexAxis: "x",
-        responsive: true,
-        plugins: {
+      datasets: {
+        bar: {
+          maxBarThickness: 64,
+          categoryPercentage: 0.6667,
+          barPercentage: 1.0,
+        },
+      },
+      scales: {
+        y: {
+          // type: "brokenLinear",
+          type: useLog ? "logarithmic" : "brokenLinear",
+          reverse: false,
           title: {
             display: true,
-            text: "Total number of images already provided to the AqQua Project so far, split by instrument",
+            text: "Value (broken axis)",
+          },
+          min: 1_000_000,
+          max: 2_000_000_000,
+          ticks: {
+            callback: function (value) {
+              if (value >= 1e9) return (value / 1e9).toFixed(1) + " Billion";
+              if (value >= 1e6) return (value / 1e6).toFixed(1) + " Million";
+              if (value >= 1e3) return (value / 1e3).toFixed(0) + "Thousand";
+              return value.toString();
+            },
+            major: {
+              enabled: true,
+            },
             font: {
-              size: 18,
+              size: 16,
             },
+          },
+          grid: {
+            drawTicks: true,
+            drawOnChartArea: true,
+          },
+          afterBuildTicks: (scale) => {
+            // Override the auto-generated ticks:
+            useLog
+              ? (scale.ticks = [
+                  { value: 1e6 },
+                  { value: 1e7 },
+                  { value: 1e8 },
+                  { value: 1e9 },
+                  { value: 2e9 },
+                ])
+              : 0;
           },
         },
-        datasets: {
-          bar: {
-            maxBarThickness: 64,
-            categoryPercentage: 0.6667,
-            barPercentage: 1.0,
-          },
-        },
-        scales: {
-          y: {
-            type: "logarithmic",
-            reverse: false,
-            title: {
-              display: true,
-              text: "Value (logarithmic axis)",
-            },
-            min: 1_000_000, // Set minimum value to 1 million
-            ticks: {
-              callback: function (value) {
-                if (value >= 1e9) return (value / 1e9).toFixed(0) + " Billion";
-                if (value >= 1e6) return (value / 1e6).toFixed(0) + " Million";
-                if (value >= 1e3) return (value / 1e3).toFixed(0) + " Thousand";
-                return value.toString();
-              },
-              major: {
-                enabled: true,
-              },
-              font: {
-                size: 16,
-              },
-            },
-            grid: {
-              drawTicks: true,
-              drawOnChartArea: true,
-            },
-            afterBuildTicks: (scale) => {
-              // Override the auto-generated ticks:
-              scale.ticks = [
-                { value: 1e6 },
-                { value: 1e7 },
-                { value: 1e8 },
-                { value: 1e9 },
-              ];
-            },
-          },
-          x: {
-            stacked: false,
-            ticks: {
-              font: {
-                size: 16,
-              },
+        x: {
+          stacked: false,
+          ticks: {
+            font: {
+              size: 16,
             },
           },
         },
       },
-    };
-
-    new Chart(ctx, config);
+    },
   });
+}
