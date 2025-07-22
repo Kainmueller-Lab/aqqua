@@ -6,13 +6,13 @@
 class BrokenLinearScale extends Chart.Scale {
   static id = "brokenLinear";
   static defaults = {
-      min: 0,
-      max: 1_500_000_000,
-      split1Low: 100_000_000,
-      split1High: 200_000_000,
-      split2Low: 250_000_000,
-      split2High: 600_000_000,
-      gapSize: 32,
+    min: 0,
+    max: 1_500_000_000,
+    split1Low: 100_000_000,
+    split1High: 200_000_000,
+    split2Low: 250_000_000,
+    split2High: 600_000_000,
+    gapSize: 32,
   };
 
   getPixelForValue(value) {
@@ -252,7 +252,7 @@ const colorList = [
 
 function padWithNulls(arr, targetLength) {
   return arr.concat(
-    new Array(Math.max(targetLength - arr.length, 0)).fill(null),
+    new Array(Math.max(targetLength - arr.length, 0)).fill(null)
   );
 }
 
@@ -264,8 +264,8 @@ fetch(`${folder}filelist.json`)
       sortedFiles.map((file) =>
         fetch(`${folder}${file}`)
           .then((res) => res.text())
-          .then((text) => ({ file, text })),
-      ),
+          .then((text) => ({ file, text }))
+      )
     );
   })
   .then((fileDataList) => {
@@ -277,25 +277,25 @@ fetch(`${folder}filelist.json`)
     fileDataList.forEach(({ file, text }, index) => {
       const lines = text.trim().split("\n");
 
-	const headers = lines[0]
-            .split(",")
-            .slice(1)
-            .map((h) => h.trim()); // skip "Label"
-	const values_tmp = lines[1].split(",").map((v) => v.trim());
+      const headers = lines[0]
+        .split(",")
+        .slice(1)
+        .map((h) => h.trim()); // skip "Label"
+      const values_tmp = lines[1].split(",").map((v) => v.trim());
 
-	const label = values_tmp[0];
-	labels.push(label);
-	const values = values_tmp.slice(1);
-	if (index === fileDataList.length - 1) {
-            finalCategoryOrder = headers; // use order from last file
-	}
+      const label = values_tmp[0];
+      labels.push(label);
+      const values = values_tmp.slice(1);
+      if (index === fileDataList.length - 1) {
+        finalCategoryOrder = headers; // use order from last file
+      }
 
-	const entryMap = {};
-	headers.forEach((cat, i) => {
-            const num = values[i] === "" ? null : Number(values[i]);
-            entryMap[cat] = isNaN(num) ? null : num;
-            allCategories.add(cat);
-	});
+      const entryMap = {};
+      headers.forEach((cat, i) => {
+        const num = values[i] === "" ? null : Number(values[i]);
+        entryMap[cat] = isNaN(num) ? null : num;
+        allCategories.add(cat);
+      });
 
       labelToValuesMap[label] = entryMap;
     });
@@ -352,7 +352,7 @@ fetch(`${folder}filelist.json`)
         },
         scales: {
           y: {
-            type: "brokenLinear",
+            type: "logarithmic",
             reverse: false,
             title: {
               display: true,
