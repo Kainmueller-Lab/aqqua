@@ -358,7 +358,7 @@ fetch(`${folder}filelist.json`)
               display: true,
               text: "Value (logarithmic axis)",
             },
-            min: 1000,
+            min: 1_000_000, // Set minimum value to 1 million
             ticks: {
               callback: function (value) {
                 if (value >= 1e9) return (value / 1e9).toFixed(1) + " Billion";
@@ -380,7 +380,6 @@ fetch(`${folder}filelist.json`)
             afterBuildTicks: (scale) => {
               // Override the auto-generated ticks:
               scale.ticks = [
-                { value: 1e3 },
                 { value: 1e6 },
                 { value: 1e7 },
                 { value: 1e8 },
