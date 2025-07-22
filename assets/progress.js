@@ -361,9 +361,9 @@ fetch(`${folder}filelist.json`)
             min: 1_000_000, // Set minimum value to 1 million
             ticks: {
               callback: function (value) {
-                if (value >= 1e9) return (value / 1e9).toFixed(1) + " Billion";
-                if (value >= 1e6) return (value / 1e6).toFixed(1) + " Million";
-                if (value >= 1e3) return (value / 1e3).toFixed(1) + " Thousand";
+                if (value >= 1e9) return (value / 1e9).toFixed(0) + " Billion";
+                if (value >= 1e6) return (value / 1e6).toFixed(0) + " Million";
+                if (value >= 1e3) return (value / 1e3).toFixed(0) + " Thousand";
                 return value.toString();
               },
               major: {
