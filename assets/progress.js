@@ -1,9 +1,208 @@
-const ctx = document.getElementById("canvas");
-
 // ######################################################
 // To add new entries please create a new csv file
 // in assets/data and add it to assets/data/filelist.json
 // ######################################################
+
+class BrokenLinearScale extends Chart.Scale {
+  static id = "brokenLinear";
+  static defaults = {
+    min: 0,
+    max: 1_500_000_000,
+    split1Low: 100_000_000,
+    split1High: 200_000_000,
+    split2Low: 250_000_000,
+    split2High: 1_000_000_000,
+    gapSize: 32,
+  };
+
+  getPixelForValue(value) {
+    const { min, max, split1Low, split1High, split2Low, split2High, gapSize } =
+      this.options;
+
+    const bottom = this.bottom;
+    const top = this.top;
+    const totalHeight = bottom - top;
+    const gapCount = 2;
+    const gapTotal = gapSize * gapCount;
+    const segmentHeight = (totalHeight - gapTotal) / 3;
+
+    // Segment ranges
+    const range1 = split1Low - min;
+    const range2 = split2Low - split1High;
+    const range3 = max - split2High;
+
+    if (value <= split1Low) {
+      const ratio = (value - min) / range1;
+      return bottom - ratio * segmentHeight;
+    } else if (value >= split1High && value <= split2Low) {
+      const ratio = (value - split1High) / range2;
+      return bottom - segmentHeight - gapSize - ratio * segmentHeight;
+    } else if (value >= split2High) {
+      const ratio = (value - split2High) / range3;
+      return bottom - 2 * segmentHeight - 2 * gapSize - ratio * segmentHeight;
+    } else {
+      // Value falls inside a gap
+      return NaN;
+    }
+  }
+
+  getValueForPixel(pixel) {
+    const { min, max, split1Low, split1High, split2Low, split2High, gapSize } =
+      this.options;
+
+    const bottom = this.bottom;
+    const top = this.top;
+    const totalHeight = bottom - top;
+    const gapCount = 2;
+    const gapTotal = gapSize * gapCount;
+    const segmentHeight = (totalHeight - gapTotal) / 3;
+
+    const range1 = split1Low - min;
+    const range2 = split2Low - split1High;
+    const range3 = max - split2High;
+
+    const y = bottom - pixel;
+
+    if (y <= segmentHeight) {
+      const ratio = y / segmentHeight;
+      return min + ratio * range1;
+    } else if (y <= segmentHeight * 2 + gapSize) {
+      const ratio = (y - segmentHeight - gapSize) / segmentHeight;
+      return split1High + ratio * range2;
+    } else if (y <= segmentHeight * 3 + 2 * gapSize) {
+      const ratio = (y - 2 * segmentHeight - 2 * gapSize) / segmentHeight;
+      return split2High + ratio * range3;
+    } else {
+      return NaN;
+    }
+  }
+
+  buildTicks() {
+    const { min, max, split1Low, split1High, split2Low, split2High } =
+      this.options;
+
+    const ticks = [];
+
+    const step1 = (split1Low - min) / 5;
+    for (let i = min; i <= split1Low; i += step1) {
+      ticks.push({ value: i });
+    }
+
+    const step2 = (split2Low - split1High) / 5;
+    for (let i = split1High; i <= split2Low; i += step2) {
+      ticks.push({ value: i });
+    }
+
+    const step3 = (max - split2High) / 5;
+    for (let i = split2High; i <= max; i += step3) {
+      ticks.push({ value: i });
+    }
+
+    return ticks;
+  }
+
+  // For tooltips
+  getLabelForValue(value) {
+    if (value >= 1e9) return (value / 1e9).toFixed(1) + "B";
+    if (value >= 1e6) return (value / 1e6).toFixed(1) + "M";
+    if (value >= 1e3) return (value / 1e3).toFixed(0) + "k";
+    return value.toString();
+  }
+}
+
+const BrokenAxisMarkPlugin = {
+  id: "brokenAxisMarkerOverlay",
+  afterDatasetsDraw(chart) {
+    const scaleY = chart.scales.y;
+    const { ctx, chartArea } = chart;
+    const { split1Low, split1High, split2Low, split2High, gapSize } =
+      scaleY.options;
+
+    // Compute break Y positions
+    const totalHeight = scaleY.bottom - scaleY.top;
+    const segmentHeight = (totalHeight - gapSize * 2) / 3;
+
+    const break1Y = scaleY.bottom - segmentHeight - gapSize / 2;
+    const break2Y = scaleY.top + (scaleY.bottom - scaleY.top - gapSize / 2) / 3;
+
+    const markHeight = gapSize / 2;
+    const markWidth = 32;
+
+    ctx.save();
+    ctx.lineWidth = 1.5;
+
+    chart.data.datasets.forEach((dataset, datasetIndex) => {
+      const meta = chart.getDatasetMeta(datasetIndex);
+      meta.data.forEach((bar, index) => {
+        const value = dataset.data[index];
+        if (value == null) return;
+
+        const barCenterX = bar.x;
+
+        const drawBreakMark = (y) => {
+          const xLeft = barCenterX - markWidth / 2;
+          const xRight = barCenterX + markWidth / 2;
+          const yTop = y - markHeight / 2;
+          const yBottom = y + markHeight / 2;
+
+          // Fill rectangle
+          ctx.fillStyle = "white";
+          ctx.fillRect(xLeft, yTop, markWidth, markHeight);
+
+          // Two horizontal lines
+          ctx.strokeStyle = "black";
+          ctx.beginPath();
+          ctx.moveTo(xLeft, yTop);
+          ctx.lineTo(xRight, yTop);
+          ctx.moveTo(xLeft, yBottom);
+          ctx.lineTo(xRight, yBottom);
+          ctx.stroke();
+        };
+
+        if (value > split1Low && value < split1High) return; // inside gap 1 → skip
+        if (value > split2Low && value < split2High) return; // inside gap 2 → skip
+
+        // if (value >= split1High && value < split2Low) {
+        if (value >= split1High) {
+          drawBreakMark(break1Y);
+        }
+        if (value >= split2High) {
+          drawBreakMark(break2Y);
+        }
+      });
+    });
+
+    // Draw the break indicators on the y-axis (left edge) too
+    const drawAxisMark = (x, y) => {
+      const xAxisLeft = chartArea.left - markWidth / 2;
+      const xAxisWidth = markWidth;
+      const xRight = x + markWidth / 2;
+      const yTop = y - markHeight / 2;
+      const yBottom = y + markHeight / 2;
+
+      ctx.fillStyle = "white";
+      ctx.fillRect(xAxisLeft, yTop, markWidth, markHeight);
+
+      ctx.strokeStyle = "black";
+      ctx.beginPath();
+      ctx.moveTo(xAxisLeft, yTop);
+      ctx.lineTo(xRight, yTop);
+      ctx.moveTo(xAxisLeft, yBottom);
+      ctx.lineTo(xRight, yBottom);
+      ctx.stroke();
+    };
+
+    drawAxisMark(chartArea.left, break1Y);
+    drawAxisMark(chartArea.left, break2Y);
+
+    ctx.restore();
+  },
+};
+
+Chart.register(BrokenLinearScale);
+Chart.register(BrokenAxisMarkPlugin); //
+
+const ctx = document.getElementById("canvas");
 
 const folder = "assets/data/";
 
@@ -60,136 +259,129 @@ function padWithNulls(arr, targetLength) {
 fetch(`${folder}filelist.json`)
   .then((res) => res.json())
   .then((fileList) => {
-    // Sort files in alphanumerically decreasing order
-    const sortedFiles = fileList.sort().reverse();
-
+    const sortedFiles = fileList.sort(); // Optional: sort alphabetically
     return Promise.all(
       sortedFiles.map((file) =>
-        fetch(`${folder}${file}`).then((res) => res.text()),
+        fetch(`${folder}${file}`)
+          .then((res) => res.text())
+          .then((text) => ({ file, text })),
       ),
     );
   })
-  .then((fileContents) => {
+  .then((fileDataList) => {
     const labels = [];
-    const categoryNames = [];
-    const categoryDataMap = {}; // { "Category A": [..], ... }
+    const labelToValuesMap = {};
+    const allCategories = new Set();
+    let finalCategoryOrder = [];
 
-    fileContents.forEach((csv, index) => {
-      const lines = csv.trim().split("\n");
-      const headers = lines[0].split(",").map((h) => h.trim());
+    fileDataList.forEach(({ file, text }, index) => {
+      const lines = text.trim().split("\n");
 
-      if (index === 0) {
-        categoryNames.push(...headers.slice(1));
-        categoryNames.forEach((name) => (categoryDataMap[name] = []));
-      }
+	const headers = lines[0]
+            .split(",")
+            .slice(1)
+            .map((h) => h.trim()); // skip "Label"
+	const values_tmp = lines[1].split(",").map((v) => v.trim());
 
-      const values = lines[1].split(",").map((v) => v.trim());
-      labels.push(values[0]);
+	const label = values_tmp[0];
+	labels.push(label);
+	const values = values_tmp.slice(1);
+	if (index === fileDataList.length - 1) {
+            finalCategoryOrder = headers; // use order from last file
+	}
 
-      for (let j = 1; j < values.length; j++) {
-        const num = values[j] === "" ? null : Number(values[j]);
-        categoryDataMap[categoryNames[j - 1]].push(isNaN(num) ? null : num);
-      }
+	const entryMap = {};
+	headers.forEach((cat, i) => {
+            const num = values[i] === "" ? null : Number(values[i]);
+            entryMap[cat] = isNaN(num) ? null : num;
+            allCategories.add(cat);
+	});
+
+      labelToValuesMap[label] = entryMap;
     });
 
-    const reversedLabels = [...labels].reverse();
+    // Ensure all datasets are padded with nulls for missing entries
+    const labelCount = labels.length;
+    finalCategoryOrder.forEach((cat) => {
+      fileDataList.forEach(({ file }) => {
+        const label = file.replace(".csv", "");
+        if (!labelToValuesMap[label]) labelToValuesMap[label] = {};
+        if (!(cat in labelToValuesMap[label])) {
+          labelToValuesMap[label][cat] = null;
+        }
+      });
+    });
 
-    const datasets = categoryNames.map((name, i) => ({
-      label: name,
-      data: padWithNulls(categoryDataMap[name], labels.length).reverse(),
-      backgroundColor: colorList[i % colorList.length],
-      stack: "Stack 1",
-      // stack: i < 2 ? "Stack 1" : "Stack 2",
-    }));
-    const data = {
-      labels: reversedLabels,
-      datasets: datasets,
-    };
+    const datasets = finalCategoryOrder.map((category, i) => {
+      const data = labels.map((label) => {
+        const val = labelToValuesMap[label]?.[category];
+        return val !== undefined ? val : null;
+      });
+
+      return {
+        label: category,
+        data: data,
+        backgroundColor: colorList[i % colorList.length],
+      };
+    });
 
     const config = {
       type: "bar",
-      data: data,
-      plugins: [
-        {
-          id: "barSumLabels",
-          afterDatasetsDraw(chart) {
-            const {
-              ctx,
-              data,
-              chartArea: { top },
-              scales,
-            } = chart;
-            const meta = chart.getDatasetMeta(0);
-            const barHeight = meta.data[0].height;
-
-            data.labels.forEach((label, i) => {
-              let total = 0;
-              data.datasets.forEach((ds) => {
-                const val = ds.data[i];
-                if (val != null) total += val;
-              });
-
-              const lastBar = meta.data[i];
-              const x = scales.x.getPixelForValue(total);
-              const y = lastBar.y;
-
-              ctx.save();
-              ctx.font = "bold 16px sans-serif";
-              ctx.textAlign = "left";
-              ctx.textBaseline = "middle";
-              ctx.fillStyle = "black";
-              ctx.fillText(total.toExponential(2), x + 5, y);
-              ctx.restore();
-            });
+      data: {
+        labels: labels,
+        datasets: datasets,
+      },
+      options: {
+        indexAxis: "x",
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: "Total number of images already provided to the AqQua Project so far, split by instrument",
+            font: {
+              size: 18,
+            },
           },
         },
-      ],
-	options: {
-            indexAxis: "y",
-            responsive: true,
-            plugins: {
-		title: {
-		    display: true,
-		    text: "Total number of images already provided to the AqQua Project so far, split by instrument",
-		    font: {
-			size: 18,
-		    },
-		},
+        datasets: {
+          bar: {
+            maxBarThickness: 64,
+            categoryPercentage: 0.6667,
+            barPercentage: 1.0,
+          },
         },
-          datasets: {
-              bar: {
-		  maxBarThickness: 64,
-		  categoryPercentage: 1.0,
-		  barPercentage: 1.0,
-              },
-        },
-          scales: {
-              x: {
-		  title: {
-		      display: true,
-		      text: "Number of images",
-		      font: {
-			  size: 18,
-		      },
+        scales: {
+          y: {
+            type: "brokenLinear",
+            reverse: false,
+            title: {
+              display: true,
+              text: "Value (broken axis)",
             },
-              stacked: true,
-              ticks: {
-		  // callback: function (value) {
-		  //   return [0, 1e8, 2e8, 1e9].includes(value) ? value : "";
-		  // },
-		  stepSize: 5e7,
-              // min: 0,
-              // max: 5e9,
+            ticks: {
+              callback: function (value) {
+                if (value >= 1e9) return (value / 1e9).toFixed(1) + " Billion";
+                if (value >= 1e6) return (value / 1e6).toFixed(1) + " Million";
+                if (value >= 1e3) return (value / 1e3).toFixed(0) + "k";
+                return value.toString();
+              },
+              major: {
+                enabled: true,
+              },
               font: {
                 size: 16,
               },
             },
+            grid: {
+              drawTicks: true,
+              drawOnChartArea: true,
+            },
           },
-          y: {
-            stacked: true,
+          x: {
+            stacked: false,
             ticks: {
               font: {
-                  size: 16,
+                size: 16,
               },
             },
           },
@@ -197,5 +389,5 @@ fetch(`${folder}filelist.json`)
       },
     };
 
-      new Chart(ctx, config);
+    new Chart(ctx, config);
   });
