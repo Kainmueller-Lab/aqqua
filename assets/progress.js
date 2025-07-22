@@ -6,13 +6,13 @@
 class BrokenLinearScale extends Chart.Scale {
   static id = "brokenLinear";
   static defaults = {
-    min: 0,
-    max: 1_500_000_000,
-    split1Low: 100_000_000,
-    split1High: 200_000_000,
-    split2Low: 250_000_000,
-    split2High: 1_000_000_000,
-    gapSize: 32,
+      min: 0,
+      max: 1_500_000_000,
+      split1Low: 100_000_000,
+      split1High: 200_000_000,
+      split2Low: 250_000_000,
+      split2High: 600_000_000,
+      gapSize: 32,
   };
 
   getPixelForValue(value) {
