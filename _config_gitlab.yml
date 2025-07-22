@@ -1,0 +1,75 @@
+# Welcome to Jekyll!
+#
+# This config file is meant for settings that affect your whole blog, values
+# which you are expected to set up once and rarely edit after that. If you find
+# yourself editing this file very often, consider using Jekyll's data files
+# feature for the data you need to update frequently.
+#
+# For technical reasons, this file is *NOT* reloaded automatically when you use
+# 'bundle exec jekyll serve'. If you change this file, please restart the server process.
+#
+# If you need help with YAML syntax, here are some quick references for you:
+# https://learn-the-web.algonquindesign.ca/topics/markdown-yaml-cheat-sheet/#yaml
+# https://learnxinyminutes.com/docs/yaml/
+#
+# Site settings
+# These are used to personalize your new site. If you look in the HTML files,
+# you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
+# You can create any custom variable you would like, and they will be accessible
+# in the templates via {{ site.myvariable }}.
+
+title: |
+  AqQua:<br>
+    The Aquatic Life Foundation Project:<br>
+email: lisa.mais@mdc-berlin.de
+description: >- # this means to ignore newlines until "baseurl:"
+  Quantifying Life at Scale in a Changing World
+baseurl: "" # the subpath of your site, e.g. /blog
+repository: Kainmueller-Lab/aqqua
+# url: "" # the base hostname & protocol for your site, e.g. http://example.com
+twitter_username: jekyllrb
+github_username: jekyll
+# relative_url: "flylight_inst_seg_dataset"
+
+# Build settings
+# remote_theme: pages-themes/cayman@v0.2.0
+# plugins:
+# - jekyll-remote-theme
+theme: jekyll-theme-cayman
+plugins:
+  - jekyll-feed
+
+excerpt_separator: <!--end_excerpt-->
+show_downloads: false
+# future: true
+
+# to override urls supplied by github
+github:
+  repository_url: aqqua
+  build_revision: main
+  is_project_page: false
+  owner_name: aqqua
+  # zip_url: https://zenodo.org/doi/10.5281/zenodo.10875063
+  source:
+    # branch: tree/gh-pages
+#   another_url: another value
+
+# Exclude from processing.
+# The following items will not be processed, by default.
+# Any item listed under the `exclude:` key here will be automatically added to
+# the internal "default list".
+#
+# Excluded items can be processed by explicitly listing the directories or
+# their entries' file path in the `include:` list.
+#
+# exclude:
+#   - .sass-cache/
+#   - .jekyll-cache/
+#   - gemfiles/
+#   - Gemfile
+#   - Gemfile.lock
+#   - node_modules/
+#   - vendor/bundle/
+#   - vendor/cache/
+#   - vendor/gems/
+#   - vendor/ruby/
