@@ -356,8 +356,9 @@ fetch(`${folder}filelist.json`)
             reverse: false,
             title: {
               display: true,
-              text: "Value (broken axis)",
+              text: "Value (logarithmic axis)",
             },
+            min: 1000,
             ticks: {
               callback: function (value) {
                 if (value >= 1e9) return (value / 1e9).toFixed(1) + " Billion";
