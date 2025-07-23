@@ -344,6 +344,13 @@ Promise.all([
   window.labels = categories;
   window.datasets = datasets;
   window.juneData = juneData; // Store June data for reference lines
+
+  // Calculate total July images
+  window.totalJulyImages = categories.reduce((total, cat) => {
+    const value = julyData[cat];
+    return total + (value || 0);
+  }, 0);
+
   createChart(); // initial render
 });
 
@@ -369,7 +376,12 @@ function createChart() {
       plugins: {
         title: {
           display: true,
-          text: "Total number of images provided to the AqQua Project - July 2025 by instrument (with June 2025 reference lines)",
+          text: [
+            "Total number of images provided to the AqQua Project for far by instrument (07/2025)",
+            `Total: ${(window.totalJulyImages / 1e9).toFixed(
+              2
+            )} Billion images collected`,
+          ],
           font: {
             size: 18,
           },
@@ -387,9 +399,9 @@ function createChart() {
                 text: "June 2025 (reference line)",
                 fillStyle: "transparent",
                 strokeStyle: "#FF0000",
-                lineWidth: 3,
-                lineDash: [5, 5],
-                pointStyle: "line",
+                lineWidth: 1, // thinner line
+                lineDash: [2, 2], // smaller dashes
+                pointStyle: "line", // for a line symbol
               });
 
               return labels;
@@ -417,8 +429,8 @@ function createChart() {
           max: 2_000_000_000,
           ticks: {
             callback: function (value) {
-              if (value >= 1e9) return (value / 1e9).toFixed(1) + " Billion";
-              if (value >= 1e6) return (value / 1e6).toFixed(1) + " Million";
+              if (value >= 1e9) return (value / 1e9).toFixed(0) + " Billion";
+              if (value >= 1e6) return (value / 1e6).toFixed(0) + " Million";
               if (value >= 1e3) return (value / 1e3).toFixed(0) + "Thousand";
               return value.toString();
             },
@@ -428,6 +440,8 @@ function createChart() {
             font: {
               size: 16,
             },
+            maxRotation: 45, // Angle labels for both scales
+            minRotation: 45,
           },
           grid: {
             drawTicks: true,
@@ -435,15 +449,21 @@ function createChart() {
           },
           afterBuildTicks: (scale) => {
             // Override the auto-generated ticks:
-            useLog
-              ? (scale.ticks = [
-                  { value: 1e6 },
-                  { value: 1e7 },
-                  { value: 1e8 },
-                  { value: 1e9 },
-                  { value: 2e9 },
-                ])
-              : 0;
+            if (useLog) {
+              scale.ticks = [
+                { value: 1e6 },
+                { value: 2e6 },
+                { value: 5e6 },
+                { value: 1e7 },
+                { value: 2e7 },
+                { value: 5e7 },
+                { value: 1e8 },
+                { value: 2e8 },
+                { value: 5e8 },
+                { value: 1e9 },
+                { value: 2e9 },
+              ];
+            }
           },
         },
         y: {
