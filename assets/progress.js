@@ -180,15 +180,16 @@ const BrokenAxisMarkPlugin = {
             const barBottom = bar.y + bar.height / 2;
 
             // Draw June reference line
-            ctx.strokeStyle = "#FF0000";
-            ctx.lineWidth = 3;
-            ctx.setLineDash([5, 5]);
+            ctx.save();
+            ctx.strokeStyle = "#000000"; // Black color
+            ctx.lineWidth = 2; // Thinner line to match legend
+            ctx.setLineDash([2, 2]); // Smaller dashes to match legend
             ctx.beginPath();
             ctx.moveTo(juneX, barTop);
             ctx.lineTo(juneX, barBottom);
             ctx.stroke();
             ctx.setLineDash([]); // Reset line dash
-            ctx.lineWidth = 1.5;
+            ctx.restore();
           }
         }
       });
@@ -398,8 +399,8 @@ function createChart() {
               labels.push({
                 text: "June 2025 (reference line)",
                 fillStyle: "transparent",
-                strokeStyle: "#FF0000",
-                lineWidth: 1, // thinner line
+                strokeStyle: "#000000", // Black color
+                lineWidth: 2, // thinner line
                 lineDash: [2, 2], // smaller dashes
                 pointStyle: "line", // for a line symbol
               });
@@ -429,7 +430,7 @@ function createChart() {
           max: 2_000_000_000,
           ticks: {
             callback: function (value) {
-              if (value >= 1e9) return (value / 1e9).toFixed(0) + " Billion";
+              if (value >= 1e9) return (value / 1e9).toFixed(1) + " Billion";
               if (value >= 1e6) return (value / 1e6).toFixed(0) + " Million";
               if (value >= 1e3) return (value / 1e3).toFixed(0) + "Thousand";
               return value.toString();
