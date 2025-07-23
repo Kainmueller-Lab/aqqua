@@ -19,12 +19,12 @@ class BrokenLinearScale extends Chart.Scale {
     const { min, max, split1Low, split1High, split2Low, split2High, gapSize } =
       this.options;
 
-    const bottom = this.bottom;
-    const top = this.top;
-    const totalHeight = bottom - top;
+    const left = this.left;
+    const right = this.right;
+    const totalWidth = right - left;
     const gapCount = 2;
     const gapTotal = gapSize * gapCount;
-    const segmentHeight = (totalHeight - gapTotal) / 3;
+    const segmentWidth = (totalWidth - gapTotal) / 3;
 
     // Segment ranges
     const range1 = split1Low - min;
@@ -33,13 +33,13 @@ class BrokenLinearScale extends Chart.Scale {
 
     if (value <= split1Low) {
       const ratio = (value - min) / range1;
-      return bottom - ratio * segmentHeight;
+      return left + ratio * segmentWidth;
     } else if (value >= split1High && value <= split2Low) {
       const ratio = (value - split1High) / range2;
-      return bottom - segmentHeight - gapSize - ratio * segmentHeight;
+      return left + segmentWidth + gapSize + ratio * segmentWidth;
     } else if (value >= split2High) {
       const ratio = (value - split2High) / range3;
-      return bottom - 2 * segmentHeight - 2 * gapSize - ratio * segmentHeight;
+      return left + 2 * segmentWidth + 2 * gapSize + ratio * segmentWidth;
     } else {
       // Value falls inside a gap
       return NaN;
@@ -50,27 +50,27 @@ class BrokenLinearScale extends Chart.Scale {
     const { min, max, split1Low, split1High, split2Low, split2High, gapSize } =
       this.options;
 
-    const bottom = this.bottom;
-    const top = this.top;
-    const totalHeight = bottom - top;
+    const left = this.left;
+    const right = this.right;
+    const totalWidth = right - left;
     const gapCount = 2;
     const gapTotal = gapSize * gapCount;
-    const segmentHeight = (totalHeight - gapTotal) / 3;
+    const segmentWidth = (totalWidth - gapTotal) / 3;
 
     const range1 = split1Low - min;
     const range2 = split2Low - split1High;
     const range3 = max - split2High;
 
-    const y = bottom - pixel;
+    const x = pixel - left;
 
-    if (y <= segmentHeight) {
-      const ratio = y / segmentHeight;
+    if (x <= segmentWidth) {
+      const ratio = x / segmentWidth;
       return min + ratio * range1;
-    } else if (y <= segmentHeight * 2 + gapSize) {
-      const ratio = (y - segmentHeight - gapSize) / segmentHeight;
+    } else if (x <= segmentWidth * 2 + gapSize) {
+      const ratio = (x - segmentWidth - gapSize) / segmentWidth;
       return split1High + ratio * range2;
-    } else if (y <= segmentHeight * 3 + 2 * gapSize) {
-      const ratio = (y - 2 * segmentHeight - 2 * gapSize) / segmentHeight;
+    } else if (x <= segmentWidth * 3 + 2 * gapSize) {
+      const ratio = (x - 2 * segmentWidth - 2 * gapSize) / segmentWidth;
       return split2High + ratio * range3;
     } else {
       return NaN;
@@ -113,20 +113,21 @@ class BrokenLinearScale extends Chart.Scale {
 const BrokenAxisMarkPlugin = {
   id: "brokenAxisMarkerOverlay",
   afterDatasetsDraw(chart) {
-    const scaleY = chart.scales.y;
+    const scaleX = chart.scales.x; // Now x is the value axis
+    const scaleY = chart.scales.y; // Now y is the category axis
     const { ctx, chartArea } = chart;
     const { split1Low, split1High, split2Low, split2High, gapSize } =
-      scaleY.options;
+      scaleX.options;
 
-    // Compute break Y positions
-    const totalHeight = scaleY.bottom - scaleY.top;
-    const segmentHeight = (totalHeight - gapSize * 2) / 3;
+    // Compute break X positions for horizontal chart
+    const totalWidth = scaleX.right - scaleX.left;
+    const segmentWidth = (totalWidth - gapSize * 2) / 3;
 
-    const break1Y = scaleY.bottom - segmentHeight - gapSize / 2;
-    const break2Y = scaleY.top + (scaleY.bottom - scaleY.top - gapSize / 2) / 3;
+    const break1X = scaleX.left + segmentWidth + gapSize / 2;
+    const break2X = scaleX.right - segmentWidth - gapSize / 2;
 
-    const markHeight = gapSize / 2;
-    const markWidth = 32;
+    const markWidth = gapSize / 2;
+    const markHeight = 32;
 
     ctx.save();
     ctx.lineWidth = 1.5;
@@ -137,24 +138,24 @@ const BrokenAxisMarkPlugin = {
         const value = dataset.data[index];
         if (value == null) return;
 
-        const barCenterX = bar.x;
+        const barCenterY = bar.y;
 
-        const drawBreakMark = (y) => {
-          const xLeft = barCenterX - markWidth / 2;
-          const xRight = barCenterX + markWidth / 2;
-          const yTop = y - markHeight / 2;
-          const yBottom = y + markHeight / 2;
+        const drawBreakMark = (x) => {
+          const xLeft = x - markWidth / 2;
+          const xRight = x + markWidth / 2;
+          const yTop = barCenterY - markHeight / 2;
+          const yBottom = barCenterY + markHeight / 2;
 
           // Fill rectangle
           ctx.fillStyle = "white";
           ctx.fillRect(xLeft, yTop, markWidth, markHeight);
 
-          // Two horizontal lines
+          // Two vertical lines for horizontal chart
           ctx.strokeStyle = "black";
           ctx.beginPath();
           ctx.moveTo(xLeft, yTop);
-          ctx.lineTo(xRight, yTop);
-          ctx.moveTo(xLeft, yBottom);
+          ctx.lineTo(xLeft, yBottom);
+          ctx.moveTo(xRight, yTop);
           ctx.lineTo(xRight, yBottom);
           ctx.stroke();
         };
@@ -162,38 +163,59 @@ const BrokenAxisMarkPlugin = {
         if (value > split1Low && value < split1High) return; // inside gap 1 → skip
         if (value > split2Low && value < split2High) return; // inside gap 2 → skip
 
-        // if (value >= split1High && value < split2Low) {
         if (value >= split1High) {
-          drawBreakMark(break1Y);
+          drawBreakMark(break1X);
         }
         if (value >= split2High) {
-          drawBreakMark(break2Y);
+          drawBreakMark(break2X);
+        }
+
+        // Draw June reference line
+        const category = chart.data.labels[index];
+        const juneValue = window.juneData && window.juneData[category];
+        if (juneValue && juneValue > 0) {
+          const juneX = scaleX.getPixelForValue(juneValue);
+          if (!isNaN(juneX)) {
+            const barTop = bar.y - bar.height / 2;
+            const barBottom = bar.y + bar.height / 2;
+
+            // Draw June reference line
+            ctx.strokeStyle = "#FF0000";
+            ctx.lineWidth = 3;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(juneX, barTop);
+            ctx.lineTo(juneX, barBottom);
+            ctx.stroke();
+            ctx.setLineDash([]); // Reset line dash
+            ctx.lineWidth = 1.5;
+          }
         }
       });
     });
 
-    // Draw the break indicators on the y-axis (left edge) too
+    // Draw the break indicators on the x-axis (bottom edge) too
     const drawAxisMark = (x, y) => {
-      const xAxisLeft = chartArea.left - markWidth / 2;
-      const xAxisWidth = markWidth;
+      const yAxisBottom = chartArea.bottom - markHeight / 2;
+      const yAxisHeight = markHeight;
+      const xLeft = x - markWidth / 2;
       const xRight = x + markWidth / 2;
-      const yTop = y - markHeight / 2;
       const yBottom = y + markHeight / 2;
 
       ctx.fillStyle = "white";
-      ctx.fillRect(xAxisLeft, yTop, markWidth, markHeight);
+      ctx.fillRect(xLeft, yAxisBottom, markWidth, markHeight);
 
       ctx.strokeStyle = "black";
       ctx.beginPath();
-      ctx.moveTo(xAxisLeft, yTop);
-      ctx.lineTo(xRight, yTop);
-      ctx.moveTo(xAxisLeft, yBottom);
+      ctx.moveTo(xLeft, yAxisBottom);
+      ctx.lineTo(xLeft, yBottom);
+      ctx.moveTo(xRight, yAxisBottom);
       ctx.lineTo(xRight, yBottom);
       ctx.stroke();
     };
 
-    drawAxisMark(chartArea.left, break1Y);
-    drawAxisMark(chartArea.left, break2Y);
+    drawAxisMark(break1X, chartArea.bottom);
+    drawAxisMark(break2X, chartArea.bottom);
 
     ctx.restore();
   },
@@ -260,83 +282,70 @@ document.getElementById("scaleToggle").addEventListener("change", () => {
 
 function padWithNulls(arr, targetLength) {
   return arr.concat(
-    new Array(Math.max(targetLength - arr.length, 0)).fill(null),
+    new Array(Math.max(targetLength - arr.length, 0)).fill(null)
   );
 }
 
-fetch(`${folder}filelist.json`)
-  .then((res) => res.json())
-  .then((fileList) => {
-    const sortedFiles = fileList.sort(); // Optional: sort alphabetically
-    return Promise.all(
-      sortedFiles.map((file) =>
-        fetch(`${folder}${file}`)
-          .then((res) => res.text())
-          .then((text) => ({ file, text })),
-      ),
-    );
-  })
-  .then((fileDataList) => {
-    const labels = [];
-    const labelToValuesMap = {};
-    const allCategories = new Set();
-    let finalCategoryOrder = [];
+// Load only July and June 2025 data
+Promise.all([
+  fetch(`${folder}2025_07.csv`).then((res) => res.text()),
+  fetch(`${folder}2025_06.csv`).then((res) => res.text()),
+]).then(([julyText, juneText]) => {
+  // Parse July data
+  const julyLines = julyText.trim().split("\n");
+  const julyHeaders = julyLines[0]
+    .split(",")
+    .slice(1)
+    .map((h) => h.trim());
+  const julyValues = julyLines[1]
+    .split(",")
+    .slice(1)
+    .map((v) => v.trim());
 
-    fileDataList.forEach(({ file, text }, index) => {
-      const lines = text.trim().split("\n");
+  // Parse June data
+  const juneLines = juneText.trim().split("\n");
+  const juneHeaders = juneLines[0]
+    .split(",")
+    .slice(1)
+    .map((h) => h.trim());
+  const juneValues = juneLines[1]
+    .split(",")
+    .slice(1)
+    .map((v) => v.trim());
 
-      const headers = lines[0]
-        .split(",")
-        .slice(1)
-        .map((h) => h.trim()); // skip "Label"
-      const values_tmp = lines[1].split(",").map((v) => v.trim());
+  // Create maps for easy lookup
+  const julyData = {};
+  const juneData = {};
 
-      const label = values_tmp[0];
-      labels.push(label);
-      const values = values_tmp.slice(1);
-      if (index === fileDataList.length - 1) {
-        finalCategoryOrder = headers; // use order from last file
-      }
-
-      const entryMap = {};
-      headers.forEach((cat, i) => {
-        const num = values[i] === "" ? null : Number(values[i]);
-        entryMap[cat] = isNaN(num) ? null : num;
-        allCategories.add(cat);
-      });
-
-      labelToValuesMap[label] = entryMap;
-    });
-
-    // Ensure all datasets are padded with nulls for missing entries
-    const labelCount = labels.length;
-    finalCategoryOrder.forEach((cat) => {
-      fileDataList.forEach(({ file }) => {
-        const label = file.replace(".csv", "");
-        if (!labelToValuesMap[label]) labelToValuesMap[label] = {};
-        if (!(cat in labelToValuesMap[label])) {
-          labelToValuesMap[label][cat] = null;
-        }
-      });
-    });
-
-    const datasets = finalCategoryOrder.map((category, i) => {
-      const data = labels.map((label) => {
-        const val = labelToValuesMap[label]?.[category];
-        return val !== undefined ? val : null;
-      });
-
-      return {
-        label: category,
-        data: data,
-        backgroundColor: colorList[i % colorList.length],
-      };
-    });
-
-    window.labels = labels;
-    window.datasets = datasets;
-    createChart(); // initial render
+  julyHeaders.forEach((cat, i) => {
+    const num = julyValues[i] === "" ? null : Number(julyValues[i]);
+    julyData[cat] = isNaN(num) ? null : num;
   });
+
+  juneHeaders.forEach((cat, i) => {
+    const num = juneValues[i] === "" ? null : Number(juneValues[i]);
+    juneData[cat] = isNaN(num) ? null : num;
+  });
+
+  // Get all categories from July (main data)
+  const categories = julyHeaders;
+
+  // Create single dataset with July values
+  const datasets = [
+    {
+      label: "July 2025",
+      data: categories.map((cat) => julyData[cat]),
+      backgroundColor: colorList.slice(0, categories.length),
+      borderColor: categories.map((_, i) => colorList[i % colorList.length]),
+      borderWidth: 1,
+    },
+  ];
+
+  window.labels = categories;
+  window.datasets = datasets;
+  window.juneData = juneData; // Store June data for reference lines
+  createChart(); // initial render
+});
 
 // Chart creation function with toggle
 function createChart() {
@@ -355,14 +364,36 @@ function createChart() {
       datasets: window.datasets,
     },
     options: {
-      indexAxis: "x",
+      indexAxis: "y", // Change to horizontal bars
       responsive: true,
       plugins: {
         title: {
           display: true,
-          text: "Total number of images already provided to the AqQua Project so far, split by instrument",
+          text: "Total number of images provided to the AqQua Project - July 2025 by instrument (with June 2025 reference lines)",
           font: {
             size: 18,
+          },
+        },
+        legend: {
+          display: true,
+          labels: {
+            generateLabels: function (chart) {
+              const original =
+                Chart.defaults.plugins.legend.labels.generateLabels;
+              const labels = original.call(this, chart);
+
+              // Add June reference line to legend
+              labels.push({
+                text: "June 2025 (reference line)",
+                fillStyle: "transparent",
+                strokeStyle: "#FF0000",
+                lineWidth: 3,
+                lineDash: [5, 5],
+                pointStyle: "line",
+              });
+
+              return labels;
+            },
           },
         },
       },
@@ -374,8 +405,8 @@ function createChart() {
         },
       },
       scales: {
-        y: {
-          // type: "brokenLinear",
+        x: {
+          // Now x-axis is the value axis (was y)
           type: useLog ? "logarithmic" : "brokenLinear",
           reverse: false,
           title: {
@@ -415,7 +446,8 @@ function createChart() {
               : 0;
           },
         },
-        x: {
+        y: {
+          // Now y-axis is the category axis (was x)
           stacked: false,
           ticks: {
             font: {
