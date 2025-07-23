@@ -391,9 +391,8 @@ function createChart() {
           display: true,
           labels: {
             generateLabels: function (chart) {
-              const original =
-                Chart.defaults.plugins.legend.labels.generateLabels;
-              const labels = original.call(this, chart);
+              // Don't generate labels for the main dataset, only add June reference line
+              const labels = [];
 
               // Add June reference line to legend
               labels.push({
@@ -474,6 +473,8 @@ function createChart() {
             font: {
               size: 16,
             },
+            maxTicksLimit: false, // Show all labels
+            autoSkip: false, // Don't skip any labels
           },
         },
       },
