@@ -170,27 +170,63 @@ const BrokenAxisMarkPlugin = {
           drawBreakMark(break2X);
         }
 
-        // Draw June reference line
+        // Draw previous months reference lines
         const category = chart.data.labels[index];
-        const juneValue = window.juneData && window.juneData[category];
-        if (juneValue && juneValue > 0) {
-          const juneX = scaleX.getPixelForValue(juneValue);
-          if (!isNaN(juneX)) {
-            const barTop = bar.y - bar.height / 2;
-            const barBottom = bar.y + bar.height / 2;
 
-            // Draw June reference line
-            ctx.save();
-            ctx.strokeStyle = "#000000"; // Black color
-            ctx.lineWidth = 2; // Thinner line to match legend
-            ctx.setLineDash([2, 2]); // Smaller dashes to match legend
-            ctx.beginPath();
-            ctx.moveTo(juneX, barTop);
-            ctx.lineTo(juneX, barBottom);
-            ctx.stroke();
-            ctx.setLineDash([]); // Reset line dash
-            ctx.restore();
-          }
+        // Draw a reference line for each previous month
+        if (window.allPreviousData && window.allPreviousMonths) {
+          console.log(`Drawing reference lines for category: ${category}`);
+          console.log("Available previous months:", window.allPreviousMonths);
+          console.log("Previous data:", window.allPreviousData);
+
+          window.allPreviousMonths.forEach((monthLabel, monthIndex) => {
+            const previousValue =
+              window.allPreviousData[monthLabel] &&
+              window.allPreviousData[monthLabel][category];
+            console.log(`${monthLabel} - ${category}: ${previousValue}`);
+
+            if (previousValue && previousValue > 0) {
+              const previousX = scaleX.getPixelForValue(previousValue);
+              console.log(`Pixel position for ${previousValue}: ${previousX}`);
+
+              if (!isNaN(previousX)) {
+                const barTop = bar.y - bar.height / 2;
+                const barBottom = bar.y + bar.height / 2;
+
+                // Draw previous month reference line
+                ctx.save();
+                // Use different colors/styles for different months
+                const colors = [
+                  "#FF0000", // Make first line red for visibility
+                  "#00FF00", // Make second line green for visibility
+                  "#0000FF", // Make third line blue for visibility
+                  "#CCCCCC",
+                  "#DDDDDD",
+                ];
+                const dashPatterns = [
+                  [2, 2],
+                  [4, 2],
+                  [6, 2],
+                  [8, 2],
+                  [10, 2],
+                ];
+
+                ctx.strokeStyle = colors[monthIndex % colors.length];
+                ctx.lineWidth = 3; // Make lines thicker for visibility
+                ctx.setLineDash(dashPatterns[monthIndex % dashPatterns.length]);
+                ctx.beginPath();
+                ctx.moveTo(previousX, barTop);
+                ctx.lineTo(previousX, barBottom);
+                ctx.stroke();
+                ctx.setLineDash([]); // Reset line dash
+                ctx.restore();
+
+                console.log(
+                  `Drew reference line for ${monthLabel} at x=${previousX}`
+                );
+              }
+            }
+          });
         }
       });
     });
@@ -287,73 +323,186 @@ function padWithNulls(arr, targetLength) {
   );
 }
 
-// Load only July and June 2025 data
-Promise.all([
-  fetch(`${folder}2025_07.csv`).then((res) => res.text()),
-  fetch(`${folder}2025_06.csv`).then((res) => res.text()),
-]).then(([julyText, juneText]) => {
-  // Parse July data
-  const julyLines = julyText.trim().split("\n");
-  const julyHeaders = julyLines[0]
-    .split(",")
-    .slice(1)
-    .map((h) => h.trim());
-  const julyValues = julyLines[1]
-    .split(",")
-    .slice(1)
-    .map((v) => v.trim());
+// Load filelist.json first, then load all CSV files
+fetch(`${folder}filelist.json`)
+  .then((res) => res.json())
+  .then((fileList) => {
+    // Sort files to ensure proper order (assuming YYYY_MM.csv format)
+    const sortedFiles = fileList.sort();
 
-  // Parse June data
-  const juneLines = juneText.trim().split("\n");
-  const juneHeaders = juneLines[0]
-    .split(",")
-    .slice(1)
-    .map((h) => h.trim());
-  const juneValues = juneLines[1]
-    .split(",")
-    .slice(1)
-    .map((v) => v.trim());
+    // Get the latest file and all previous files
+    const latestFile = sortedFiles[sortedFiles.length - 1];
+    const previousFiles = sortedFiles.slice(0, -1); // All files except the latest
 
-  // Create maps for easy lookup
-  const julyData = {};
-  const juneData = {};
+    console.log(`Loading latest data: ${latestFile}`);
+    console.log(
+      `Loading comparison data for ${previousFiles.length} previous months:`,
+      previousFiles
+    );
 
-  julyHeaders.forEach((cat, i) => {
-    const num = julyValues[i] === "" ? null : Number(julyValues[i]);
-    julyData[cat] = isNaN(num) ? null : num;
+    // Load all CSV files
+    const loadPromises = [
+      fetch(`${folder}${latestFile}`).then((res) => res.text()),
+    ];
+
+    // Add promises for all previous files
+    previousFiles.forEach((file) => {
+      loadPromises.push(fetch(`${folder}${file}`).then((res) => res.text()));
+    });
+
+    return Promise.all(loadPromises).then((allTexts) => {
+      const latestText = allTexts[0];
+      const previousTexts = allTexts.slice(1);
+      return { latestText, previousTexts, latestFile, previousFiles };
+    });
+  })
+  .then(({ latestText, previousTexts, latestFile, previousFiles }) => {
+    // Parse latest month data (main chart data)
+    const latestLines = latestText.trim().split("\n");
+    const latestHeaders = latestLines[0]
+      .split(",")
+      .slice(1)
+      .map((h) => h.trim());
+    const latestValues = latestLines[1]
+      .split(",")
+      .slice(1)
+      .map((v) => v.trim());
+
+    // Parse all previous months data (comparison/reference lines)
+    const allPreviousData = {};
+    const allPreviousMonths = [];
+
+    previousFiles.forEach((file, fileIndex) => {
+      const previousText = previousTexts[fileIndex];
+      const previousLines = previousText.trim().split("\n");
+      const previousHeaders = previousLines[0]
+        .split(",")
+        .slice(1)
+        .map((h) => h.trim());
+      const previousValues = previousLines[1]
+        .split(",")
+        .slice(1)
+        .map((v) => v.trim());
+
+      const previousData = {};
+      previousHeaders.forEach((cat, i) => {
+        const num = previousValues[i] === "" ? null : Number(previousValues[i]);
+        previousData[cat] = isNaN(num) ? null : num;
+      });
+
+      const monthLabel = file.replace(".csv", "").replace("_", "/");
+      allPreviousData[monthLabel] = previousData;
+      allPreviousMonths.push(monthLabel);
+    });
+
+    // Create latest data object
+    const latestData = {};
+    latestHeaders.forEach((cat, i) => {
+      const num = latestValues[i] === "" ? null : Number(latestValues[i]);
+      latestData[cat] = isNaN(num) ? null : num;
+    });
+
+    // Extract month/year info from filenames for display
+    const latestMonth = latestFile.replace(".csv", "").replace("_", "/");
+
+    // Create categories list (use latest data as primary)
+    const categories = latestHeaders;
+
+    // Create Chart.js dataset
+    const datasets = [
+      {
+        label: latestMonth,
+        data: categories.map((cat) => latestData[cat]),
+        backgroundColor: colorList.slice(0, categories.length),
+        borderColor: categories.map((_, i) => colorList[i % colorList.length]),
+        borderWidth: 1,
+      },
+    ];
+
+    // Store data globally for chart access
+    window.labels = categories;
+    window.datasets = datasets;
+    window.allPreviousData = allPreviousData; // Store all previous months data
+    window.allPreviousMonths = allPreviousMonths; // Store all previous month labels
+    window.latestMonth = latestMonth;
+
+    // Calculate total images for latest month
+    window.totalLatestImages = categories.reduce((total, cat) => {
+      const value = latestData[cat];
+      return total + (value || 0);
+    }, 0);
+
+    createChart(); // initial render
+  })
+  .catch((error) => {
+    console.error("Error loading data:", error);
+    // Fallback to hardcoded files if filelist.json fails
+    console.log("Falling back to direct file loading...");
+
+    Promise.all([
+      fetch(`${folder}2025_07.csv`).then((res) => res.text()),
+      fetch(`${folder}2025_06.csv`).then((res) => res.text()),
+    ]).then(([latestText, previousText]) => {
+      // Parse as before but with generic variable names
+      const latestLines = latestText.trim().split("\n");
+      const latestHeaders = latestLines[0]
+        .split(",")
+        .slice(1)
+        .map((h) => h.trim());
+      const latestValues = latestLines[1]
+        .split(",")
+        .slice(1)
+        .map((v) => v.trim());
+
+      const previousLines = previousText.trim().split("\n");
+      const previousHeaders = previousLines[0]
+        .split(",")
+        .slice(1)
+        .map((h) => h.trim());
+      const previousValues = previousLines[1]
+        .split(",")
+        .slice(1)
+        .map((v) => v.trim());
+
+      const latestData = {};
+      const previousData = {};
+
+      latestHeaders.forEach((cat, i) => {
+        const num = latestValues[i] === "" ? null : Number(latestValues[i]);
+        latestData[cat] = isNaN(num) ? null : num;
+      });
+
+      previousHeaders.forEach((cat, i) => {
+        const num = previousValues[i] === "" ? null : Number(previousValues[i]);
+        previousData[cat] = isNaN(num) ? null : num;
+      });
+
+      const categories = latestHeaders;
+      const datasets = [
+        {
+          label: "2025/07",
+          data: categories.map((cat) => latestData[cat]),
+          backgroundColor: colorList.slice(0, categories.length),
+          borderColor: categories.map(
+            (_, i) => colorList[i % colorList.length]
+          ),
+          borderWidth: 1,
+        },
+      ];
+
+      window.labels = categories;
+      window.datasets = datasets;
+      window.allPreviousData = { "2025/06": previousData }; // Fallback format
+      window.allPreviousMonths = ["2025/06"]; // Fallback format
+      window.latestMonth = "2025/07";
+      window.totalLatestImages = categories.reduce((total, cat) => {
+        const value = latestData[cat];
+        return total + (value || 0);
+      }, 0);
+
+      createChart();
+    });
   });
-
-  juneHeaders.forEach((cat, i) => {
-    const num = juneValues[i] === "" ? null : Number(juneValues[i]);
-    juneData[cat] = isNaN(num) ? null : num;
-  });
-
-  // Get all categories from July (main data)
-  const categories = julyHeaders;
-
-  // Create single dataset with July values
-  const datasets = [
-    {
-      label: "July 2025",
-      data: categories.map((cat) => julyData[cat]),
-      backgroundColor: colorList.slice(0, categories.length),
-      borderColor: categories.map((_, i) => colorList[i % colorList.length]),
-      borderWidth: 1,
-    },
-  ];
-
-  window.labels = categories;
-  window.datasets = datasets;
-  window.juneData = juneData; // Store June data for reference lines
-
-  // Calculate total July images
-  window.totalJulyImages = categories.reduce((total, cat) => {
-    const value = julyData[cat];
-    return total + (value || 0);
-  }, 0);
-
-  createChart(); // initial render
-});
 
 // Chart creation function with toggle
 function createChart() {
@@ -378,10 +527,12 @@ function createChart() {
         title: {
           display: true,
           text: [
-            "Total number of images provided to the AqQua Project for far by instrument (07/2025)",
-            `Total: ${(window.totalJulyImages / 1e9).toFixed(
-              2
-            )} Billion images collected`,
+            `Total number of images provided to the AqQua Project by instrument (${
+              window.latestMonth || "07/2025"
+            })`,
+            `Total: ${(
+              (window.totalLatestImages || window.totalJulyImages) / 1e9
+            ).toFixed(2)} Billion images collected`,
           ],
           font: {
             size: 18,
@@ -391,21 +542,45 @@ function createChart() {
           display: true,
           labels: {
             generateLabels: function (chart) {
-              // Don't generate labels for the main dataset, only add June reference line
+              // Don't generate labels for the main dataset, only add reference lines for all previous months
               const labels = [];
 
-              // Add June reference line to legend
-              labels.push({
-                text: "June 2025 (reference line)",
-                fillStyle: "transparent",
-                strokeStyle: "#000000", // Black color
-                lineWidth: 2, // thinner line
-                lineDash: [2, 2], // smaller dashes
-                pointStyle: "line", // for a line symbol
-              });
+              // Add reference lines for all previous months to legend
+              if (window.allPreviousMonths) {
+                const colors = [
+                  "#666666",
+                  "#888888",
+                  "#AAAAAA",
+                  "#CCCCCC",
+                  "#DDDDDD",
+                ];
+                const dashPatterns = [
+                  [2, 2],
+                  [4, 2],
+                  [6, 2],
+                  [8, 2],
+                  [10, 2],
+                ];
+
+                window.allPreviousMonths.forEach((monthLabel, monthIndex) => {
+                  labels.push({
+                    text: `${monthLabel} (reference line)`,
+                    fillStyle: "transparent",
+                    strokeStyle: colors[monthIndex % colors.length],
+                    lineWidth: 1.5,
+                    lineDash: dashPatterns[monthIndex % dashPatterns.length],
+                    pointStyle: "line",
+                    boxWidth: 0,
+                    boxHeight: 0,
+                    usePointStyle: true,
+                  });
+                });
+              }
 
               return labels;
             },
+            usePointStyle: true, // Enable point style for all legend items
+            pointStyle: "line", // Default to line style
           },
         },
       },
