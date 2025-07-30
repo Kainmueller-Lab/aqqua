@@ -195,13 +195,13 @@ const BrokenAxisMarkPlugin = {
 
                 // Draw previous month reference line
                 ctx.save();
-                // Use different colors/styles for different months
+                // Use the same colors/styles as defined in the legend
                 const colors = [
-                  "#FF0000", // Make first line red for visibility
-                  "#00FF00", // Make second line green for visibility
-                  "#0000FF", // Make third line blue for visibility
+                  "#222222",
+                  "#666666",
+                  "#888888",
+                  "#AAAAAA",
                   "#CCCCCC",
-                  "#DDDDDD",
                 ];
                 const dashPatterns = [
                   [2, 2],
@@ -212,7 +212,7 @@ const BrokenAxisMarkPlugin = {
                 ];
 
                 ctx.strokeStyle = colors[monthIndex % colors.length];
-                ctx.lineWidth = 3; // Make lines thicker for visibility
+                ctx.lineWidth = 1.5; // Match legend lineWidth
                 ctx.setLineDash(dashPatterns[monthIndex % dashPatterns.length]);
                 ctx.beginPath();
                 ctx.moveTo(previousX, barTop);
@@ -548,11 +548,11 @@ function createChart() {
               // Add reference lines for all previous months to legend
               if (window.allPreviousMonths) {
                 const colors = [
+                  "#222222",
                   "#666666",
                   "#888888",
                   "#AAAAAA",
                   "#CCCCCC",
-                  "#DDDDDD",
                 ];
                 const dashPatterns = [
                   [2, 2],
