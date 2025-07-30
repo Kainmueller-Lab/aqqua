@@ -90,19 +90,15 @@ def combine_data(grouped, other_data_path: str):
 			for instrument, count in other_series.items():
 				grouped[instrument] = grouped.get(instrument, 0) + count
 
-	# Group everything starting with UVP5
-	uvp5_mask = grouped.index.str.startswith('UVP5')
-	if uvp5_mask.any():
-		uvp5_sum = grouped[uvp5_mask].sum()
-		grouped = grouped[~uvp5_mask]
-		grouped['UVP5'] = uvp5_sum
+	# List of instrument prefixes to group
+	instruments_to_group = ["UVP", "CPICS"]
 	
-	# Group everything starting with CPICS  
-	cpics_mask = grouped.index.str.startswith('CPICS')
-	if cpics_mask.any():
-		cpics_sum = grouped[cpics_mask].sum()
-		grouped = grouped[~cpics_mask]
-		grouped['CPICS'] = cpics_sum
+	for instrument_prefix in instruments_to_group:
+		mask = grouped.index.str.startswith(instrument_prefix)
+		if mask.any():
+			instrument_sum = grouped[mask].sum()
+			grouped = grouped[~mask]
+			grouped[instrument_prefix] = instrument_sum
 	
 
 	
