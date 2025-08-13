@@ -3,20 +3,27 @@ layout: default
 title: Data Collection
 ---
 
-<span class="nojs"><em>Please enable javascript to see a more detailed plot of the current state of the data collection effort!</em><br><br>
-Overview of the images, split by instrument, already provided to the AqQua project so far:
-<img src="./assets/data_collection_overview_20250704.png" alt="Data collection prgoress">
-</span>
+<figure>
+  <img src="{{site.url}}/assets/map-promised-gathered.png" alt="World map showing locations of collected plankton imaging datasets, anticipated contributions, and contributing institutions."/>
+  <figcaption>Geographic distribution of plankton imaging datasets already collected by the AqQua project (colored dots, by instrument type) and anticipated contributions (light gray dots) pledged by collaborators. Yellow stars mark contributing institutions.</figcaption>
+</figure>
 
-<label>
-  <input type="checkbox" id="scaleToggle" />
-  Use Logarithmic Scale
-</label>
+<figure>
+    <span class="nojs"><em>Please enable javascript to see a more detailed plot of the current state of the data collection effort!</em><br><br>
+    Overview of the images, split by instrument, already provided to the AqQua project so far:
+    <img src="./assets/data_collection_overview_20250704.png" alt="Data collection prgoress">
+    </span>
 
-<div style="display: flex;justify-content: center; min-width:720px; min-height:360px;">
-<canvas id="canvas"></canvas>
-</div>
+    <label>
+    <input type="checkbox" id="scaleToggle" />
+    Use Logarithmic Scale
+    </label>
 
+    <div style="display: flex;justify-content: center; min-width:720px; min-height:360px;">
+    <canvas id="canvas"></canvas>
+    </div>
+
+</figure>
 <script>
 Array.from(
     document.querySelectorAll(".nojs")
