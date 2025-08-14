@@ -4,7 +4,7 @@ title: Data Collection
 ---
 
 <figure>
-  <img src="{{site.url}}/assets/map-promised-gathered.png" alt="World map showing locations of collected plankton imaging datasets, anticipated contributions, and contributing institutions."/>
+  <img src="./assets/map-promised-gathered.png" alt="World map showing locations of collected plankton imaging datasets, anticipated contributions, and contributing institutions."/>
   <figcaption>Geographic distribution of plankton imaging datasets already collected by the AqQua project (colored dots, by instrument type) and anticipated contributions (light gray dots) pledged by collaborators. Yellow stars mark contributing institutions.</figcaption>
 </figure>
 
