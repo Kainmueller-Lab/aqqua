@@ -11,7 +11,7 @@ Every contribution strengthens the global foundation model, helping researchers 
 
 <figure>
   <img src="./assets/map-promised-gathered.png" alt="World map showing locations of collected plankton imaging datasets, anticipated contributions, and contributing institutions."/>
-  <figcaption>Geographic distribution of plankton imaging datasets already collected by the AqQua project (colored dots, by instrument type) and anticipated contributions (light gray dots) pledged by collaborators. Yellow stars mark contributing institutions.</figcaption>
+  <figcaption>Geographic distribution of plankton imaging datasets already collected by the AqQua project (colored dots, by instrument type) and anticipated contributions (light gray crosses) pledged by collaborators. Yellow stars mark contributing institutions.</figcaption>
 </figure>
 
 <figure>
@@ -25,8 +25,8 @@ Every contribution strengthens the global foundation model, helping researchers 
     Use Logarithmic Scale
     </label>
 
-    <div style="display: flex;justify-content: center; min-width:720px; min-height:360px;">
-    <canvas id="canvas"></canvas>
+    <div style="display: flex;justify-content: center; width: 100%;">
+        <canvas id="canvas"></canvas>
     </div>
 
 </figure>
