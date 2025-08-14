@@ -523,6 +523,7 @@ function createChart() {
     options: {
       indexAxis: "y", // Change to horizontal bars
       responsive: true,
+      maintainAspectRatio: false,
       plugins: {
         title: {
           display: true,
@@ -581,28 +582,30 @@ function createChart() {
             },
             usePointStyle: true, // Enable point style for all legend items
             pointStyle: "line", // Default to line style
-            },
           },
-          },
-          datasets: {
-          bar: {
-            maxBarThickness: 64,
-            categoryPercentage: 0.6667,
-            barPercentage: 1.0,
-          },
-          },
-          scales: {
-          x: {
-            // Now x-axis is the value axis (was y)
-            type: useLog ? "logarithmic" : "brokenLinear",
-            reverse: false,
-            title: {
+        },
+      },
+      datasets: {
+        bar: {
+          maxBarThickness: 64,
+          categoryPercentage: 0.6667,
+          barPercentage: 1.0,
+        },
+      },
+      scales: {
+        x: {
+          // Now x-axis is the value axis (was y)
+          type: useLog ? "logarithmic" : "brokenLinear",
+          reverse: false,
+          title: {
             display: true,
-            text: useLog ? "Number of images provided" : "Number of images provided (broken axis)",
-            },
-            min: 1_000_000,
-            max: 2_000_000_000,
-            ticks: {
+            text: useLog
+              ? "Number of images provided"
+              : "Number of images provided (broken axis)",
+          },
+          min: 1_000_000,
+          max: 2_000_000_000,
+          ticks: {
             callback: function (value) {
               if (value >= 1e9) return (value / 1e9).toFixed(1) + " Billion";
               if (value >= 1e6) return (value / 1e6).toFixed(0) + " Million";
