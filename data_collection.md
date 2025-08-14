@@ -10,7 +10,9 @@ The bar plot shows the number of images per instrument collected so far.
 Every contribution strengthens the global foundation model, helping researchers better understand aquatic ecosystems in a changing world.
 
 <figure>
-  <img src="./assets/map-promised-gathered.png" alt="World map showing locations of collected plankton imaging datasets, anticipated contributions, and contributing institutions."/>
+    <a href="./assets/map-promised-gathered.png" target="_blank">
+        <img src="./assets/map-promised-gathered.png" alt="World map showing locations of collected plankton imaging datasets, anticipated contributions, and contributing institutions."/>
+    </a>
   <figcaption>Geographic distribution of plankton imaging datasets already collected by the AqQua project (colored dots, by instrument type) and anticipated contributions (light gray crosses) pledged by collaborators. Yellow stars mark contributing institutions.</figcaption>
 </figure>
 
@@ -25,7 +27,7 @@ Every contribution strengthens the global foundation model, helping researchers 
     Use Logarithmic Scale
     </label>
 
-    <div style="display: flex;justify-content: center; width: 100%;">
+    <div style="display: flex;justify-content: center; width: 100%; height: 400px;">
         <canvas id="canvas"></canvas>
     </div>
 
