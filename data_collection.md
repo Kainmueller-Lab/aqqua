@@ -56,7 +56,7 @@ Due to our full commitment to Open Science, **all data shared with the AqQua pro
 
 For the purpose of training a foundation model, AqQua requires image data (including scale information), as well as at least latitude, longitude, depth, date and time of observation. Classification labels (e.g. species or particle type) and trait annotations (e.g. egg-carrying) are very welcome as these can help fine-tune and benchmark the foundation model, but are not required. We would also appreciate it if you would share sample unit definition and the sampled volume information for your samples, to enable us to develop global distribution models and to estimate process rates (e.g. as in [Laget et al. 2024](https://doi.org/10.1038/s41467-024-47651-4), Clements et al. [2022](https://doi.org/10.1029/2021GB007276) & [2023](https://doi.org/10.1029/2022GB007633)). Image data of (mono)cultures is also welcome and in this case, metadata should indicate the original sampling location, date and time.
 
-As production-run foundation model training will commence this fall, **the deadline for sharing data with AqQua is July 31, 2025**.
+As production-run foundation model training will commence this fall, **the deadline for sharing data with AqQua is September 30, 2025**.
 
 **To participate, please carefully read and fill the online form below**. Note, some filling instructions and exemplary answers are provided via mouseover questionmarks. After clicking the "Submit" button at the end of the form, you will receive an email with your filled form for your records.
 
