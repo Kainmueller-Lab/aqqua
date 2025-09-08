@@ -5,16 +5,9 @@ title: Data Collection
 
 AqQua is building the world’s most comprehensive open dataset of plankton and particle images to power next-generation AI models for aquatic research.
 The following figures visualize the current progress of the data collection.
-The map shows where data has already been collected and where collaborators have pledged future contributions.
 The bar plot shows the number of images per instrument collected so far.
 Every contribution strengthens the global foundation model, helping researchers better understand aquatic ecosystems in a changing world.
-
-<figure>
-    <a href="./assets/map-promised-gathered.png" target="_blank">
-        <img src="./assets/map-promised-gathered.png" alt="World map showing locations of collected plankton imaging datasets, anticipated contributions, and contributing institutions."/>
-    </a>
-  <figcaption>Geographic distribution of plankton imaging datasets already collected by the AqQua project (colored dots, by instrument type) and anticipated contributions (light gray crosses) pledged by collaborators. Yellow stars mark contributing institutions.</figcaption>
-</figure>
+The map shows where data has already been collected and where collaborators have pledged future contributions.
 
 <figure>
     <span class="nojs"><em>Please enable javascript to see a more detailed plot of the current state of the data collection effort!</em><br><br>
@@ -41,6 +34,14 @@ Array.from(
 </script>
 <script src=" https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.min.js "></script>
 <script src="./assets/progress.js"></script>
+
+<figure>
+    <a href="./assets/map-promised-gathered.png" target="_blank">
+        <img src="./assets/map-promised-gathered.png" alt="World map showing locations of collected plankton imaging datasets, anticipated contributions, and contributing institutions."/>
+    </a>
+  <figcaption>Geographic distribution of plankton imaging datasets already collected by the AqQua project (colored dots, by instrument type) and anticipated contributions (light gray crosses) pledged by collaborators. Yellow stars mark contributing institutions.</figcaption>
+</figure>
+
 
 The goal of the AqQua project is to:
 
