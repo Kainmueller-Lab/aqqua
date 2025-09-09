@@ -1,6 +1,8 @@
 // ######################################################
-// To add new entries please create a new csv file
-// in assets/data and add it to assets/data/filelist.json
+// IMPORTANT: CSV files MUST be located in assets/data directory
+// To add new entries:
+// 1. Create a new CSV file in assets/data/ (YYYY_MM.csv format)
+// 2. Add the filename to assets/data/filelist.json
 // ######################################################
 
 class BrokenLinearScale extends Chart.Scale {
@@ -263,7 +265,9 @@ Chart.register(BrokenAxisMarkPlugin); //
 
 const ctx = document.getElementById("canvas");
 
-const folder = "assets/data/";
+// Enforce CSV files must be located in assets/data directory
+const DATA_FOLDER = "assets/data/";
+const folder = DATA_FOLDER;
 
 // List of colors
 const colorList = [
@@ -309,6 +313,19 @@ const colorList = [
   "#95DEE3",
 ];
 
+// New category-to-color mapping for bar colors
+const categoryToColor = {
+  PlanktonImager: "#44AA99", // Plankton Imager
+  IFCB: "#DDCC77", // IFCB
+  CPICS: "#332288", // CPICS
+  Other: "#88CCEE", // from ImageStream or use "Other": "#999999"
+  UVP: "#332288", // from UVP5HD
+  Zooscan: "#CC6677", // Zooscan
+  FlowCam: "#44AA99", // FlowCam
+  ISIIS: "#DDCC77", // ISIIS
+  PlanktoScope: "#44AA99", // PlanktoScope
+};
+
 let labels = [];
 let datasets = [];
 let chartInstance = null;
@@ -323,31 +340,59 @@ function padWithNulls(arr, targetLength) {
   );
 }
 
-// Load filelist.json first, then load all CSV files
-fetch(`${folder}filelist.json`)
+// Validation function to ensure CSV files are from the correct directory
+function validateDataPath(filename) {
+  if (!filename.endsWith(".csv")) {
+    console.warn(`File ${filename} is not a CSV file`);
+    return false;
+  }
+  return true;
+}
+
+// Function to safely construct file paths within the data directory
+function getDataFilePath(filename) {
+  const validatedFilename = validateDataPath(filename) ? filename : null;
+  if (!validatedFilename) {
+    throw new Error(
+      `Invalid data file: ${filename}. Only CSV files are allowed.`
+    );
+  }
+  return `${DATA_FOLDER}${validatedFilename}`;
+}
+
+// Load filelist.json first, then load all CSV files from assets/data directory
+fetch(`${DATA_FOLDER}filelist.json`)
   .then((res) => res.json())
   .then((fileList) => {
+    // Validate that all files in the list are CSV files
+    const validFiles = fileList.filter(validateDataPath);
+    if (validFiles.length !== fileList.length) {
+      console.warn(
+        "Some files in filelist.json are not valid CSV files and will be ignored"
+      );
+    }
+
     // Sort files to ensure proper order (assuming YYYY_MM.csv format)
-    const sortedFiles = fileList.sort();
+    const sortedFiles = validFiles.sort();
 
     // Get the latest file and all previous files
     const latestFile = sortedFiles[sortedFiles.length - 1];
     const previousFiles = sortedFiles.slice(0, -1); // All files except the latest
 
-    console.log(`Loading latest data: ${latestFile}`);
+    console.log(`Loading latest data from assets/data: ${latestFile}`);
     console.log(
-      `Loading comparison data for ${previousFiles.length} previous months:`,
+      `Loading comparison data for ${previousFiles.length} previous months from assets/data:`,
       previousFiles
     );
 
-    // Load all CSV files
+    // Load all CSV files using validated paths
     const loadPromises = [
-      fetch(`${folder}${latestFile}`).then((res) => res.text()),
+      fetch(getDataFilePath(latestFile)).then((res) => res.text()),
     ];
 
     // Add promises for all previous files
     previousFiles.forEach((file) => {
-      loadPromises.push(fetch(`${folder}${file}`).then((res) => res.text()));
+      loadPromises.push(fetch(getDataFilePath(file)).then((res) => res.text()));
     });
 
     return Promise.all(loadPromises).then((allTexts) => {
@@ -409,12 +454,15 @@ fetch(`${folder}filelist.json`)
     const categories = latestHeaders;
 
     // Create Chart.js dataset
+    const backgroundColors = categories.map(
+      (cat) => categoryToColor[cat] || "#999999"
+    );
     const datasets = [
       {
         label: latestMonth,
         data: categories.map((cat) => latestData[cat]),
-        backgroundColor: colorList.slice(0, categories.length),
-        borderColor: categories.map((_, i) => colorList[i % colorList.length]),
+        backgroundColor: backgroundColors,
+        borderColor: backgroundColors,
         borderWidth: 1,
       },
     ];
@@ -436,12 +484,12 @@ fetch(`${folder}filelist.json`)
   })
   .catch((error) => {
     console.error("Error loading data:", error);
-    // Fallback to hardcoded files if filelist.json fails
-    console.log("Falling back to direct file loading...");
+    // Fallback to hardcoded files from assets/data if filelist.json fails
+    console.log("Falling back to direct file loading from assets/data...");
 
     Promise.all([
-      fetch(`${folder}2025_07.csv`).then((res) => res.text()),
-      fetch(`${folder}2025_06.csv`).then((res) => res.text()),
+      fetch(getDataFilePath("2025_07.csv")).then((res) => res.text()),
+      fetch(getDataFilePath("2025_06.csv")).then((res) => res.text()),
     ]).then(([latestText, previousText]) => {
       // Parse as before but with generic variable names
       const latestLines = latestText.trim().split("\n");
@@ -478,14 +526,15 @@ fetch(`${folder}filelist.json`)
       });
 
       const categories = latestHeaders;
+      const backgroundColors = categories.map(
+        (cat) => categoryToColor[cat] || "#999999"
+      );
       const datasets = [
         {
           label: "2025/07",
           data: categories.map((cat) => latestData[cat]),
-          backgroundColor: colorList.slice(0, categories.length),
-          borderColor: categories.map(
-            (_, i) => colorList[i % colorList.length]
-          ),
+          backgroundColor: backgroundColors,
+          borderColor: backgroundColors,
           borderWidth: 1,
         },
       ];
@@ -521,7 +570,7 @@ function createChart() {
       datasets: window.datasets,
     },
     options: {
-      indexAxis: "y", // Change to horizontal bars
+      indexAxis: "y",
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
@@ -535,18 +584,13 @@ function createChart() {
               (window.totalLatestImages || window.totalJulyImages) / 1e9
             ).toFixed(2)} Billion images collected`,
           ],
-          font: {
-            size: 18,
-          },
+          font: { size: 18 },
         },
         legend: {
           display: true,
           labels: {
             generateLabels: function (chart) {
-              // Don't generate labels for the main dataset, only add reference lines for all previous months
               const labels = [];
-
-              // Add reference lines for all previous months to legend
               if (window.allPreviousMonths) {
                 const colors = [
                   "#222222",
@@ -562,7 +606,6 @@ function createChart() {
                   [8, 2],
                   [10, 2],
                 ];
-
                 window.allPreviousMonths.forEach((monthLabel, monthIndex) => {
                   labels.push({
                     text: `${monthLabel} (reference line)`,
@@ -577,11 +620,10 @@ function createChart() {
                   });
                 });
               }
-
               return labels;
             },
-            usePointStyle: true, // Enable point style for all legend items
-            pointStyle: "line", // Default to line style
+            usePointStyle: true,
+            pointStyle: "line",
           },
         },
       },
@@ -594,7 +636,6 @@ function createChart() {
       },
       scales: {
         x: {
-          // Now x-axis is the value axis (was y)
           type: useLog ? "logarithmic" : "brokenLinear",
           reverse: false,
           title: {
@@ -612,21 +653,13 @@ function createChart() {
               if (value >= 1e3) return (value / 1e3).toFixed(0) + "Thousand";
               return value.toString();
             },
-            major: {
-              enabled: true,
-            },
-            font: {
-              size: 16,
-            },
-            maxRotation: 45, // Angle labels for both scales
+            major: { enabled: true },
+            font: { size: 16 },
+            maxRotation: 45,
             minRotation: 45,
           },
-          grid: {
-            drawTicks: true,
-            drawOnChartArea: true,
-          },
+          grid: { drawTicks: true, drawOnChartArea: true },
           afterBuildTicks: (scale) => {
-            // Override the auto-generated ticks:
             if (useLog) {
               scale.ticks = [
                 { value: 1e6 },
@@ -645,14 +678,11 @@ function createChart() {
           },
         },
         y: {
-          // Now y-axis is the category axis (was x)
           stacked: false,
           ticks: {
-            font: {
-              size: 16,
-            },
-            maxTicksLimit: false, // Show all labels
-            autoSkip: false, // Don't skip any labels
+            font: { size: 16 },
+            maxTicksLimit: false,
+            autoSkip: false,
           },
         },
       },
