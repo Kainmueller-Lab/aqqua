@@ -2,8 +2,9 @@
 layout: default
 title: FAQs
 filename: faq
-permalink: /faq/
+permalink: /faq/index.html
 ---
+
 If your question is not answered here, please don’t hesitate to contact us: aqqua@geomar.de
 
 <details>
@@ -35,7 +36,6 @@ Please fill in the <a href="https://survey.hifis.dkfz.de/398984?lang=en">Data Sh
 <summary><strong>I have many projects on EcoTaxa that I would like to share. Is there something quicker than adding the AqQua user manually?</strong></summary>
 You can download these <a href="https://codebase.helmholtz.cloud/aqqua-public/ecotaxa-tools">Python scripts</a> that use the EcoTaxa API to generate a list of your EcoTaxa projects. You can at any time, should you wish to, change the access rights for multiple projects in bulk via the EcoTaxa API.
 </details>
-
 
 <details>
 <summary><strong>How is AqQua funded?</strong></summary>
