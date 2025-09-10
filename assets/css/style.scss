@@ -34,4 +34,14 @@ details summary {
     transform: rotate(90deg);
   }
 
+figure {
+  padding: 0.5em;
+  border: 1px solid lightgray;
+  border-radius: 0.5em;
+  overflow: auto;
+  margin: 1em 0;
+}
 
+figcaption {
+  font-size: 90%;
+}

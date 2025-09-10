@@ -3,20 +3,28 @@ layout: default
 title: Data Collection
 ---
 
-<span class="nojs"><em>Please enable javascript to see a more detailed plot of the current state of the data collection effort!</em><br><br>
-Overview of the images, split by instrument, already provided to the AqQua project so far:
-<img src="./assets/data_collection_overview_20250704.png" alt="Data collection prgoress">
-</span>
+AqQua is building the world’s most comprehensive open dataset of plankton and particle images to power next-generation AI models for aquatic research.
+The following figures visualize the current progress of the data collection.
+The bar plot shows the number of images per instrument collected so far.
+Every contribution strengthens the global foundation model, helping researchers better understand aquatic ecosystems in a changing world.
+The map shows where data has already been collected and where collaborators have pledged future contributions.
 
-<label>
-  <input type="checkbox" id="scaleToggle" />
-  Use Logarithmic Scale
-</label>
+<figure>
+    <span class="nojs"><em>Please enable javascript to see a more detailed plot of the current state of the data collection effort!</em><br><br>
+    Overview of the images, split by instrument, already provided to the AqQua project so far:
+    <img src="./assets/data_collection_overview_20250704.png" alt="Data collection prgoress">
+    </span>
 
-<div style="display: flex;justify-content: center; min-width:720px; min-height:360px;">
-<canvas id="canvas"></canvas>
-</div>
+    <label>
+    <input type="checkbox" id="scaleToggle" />
+    Use Logarithmic Scale
+    </label>
 
+    <div style="display: flex;justify-content: center; width: 100%; height: 400px;">
+        <canvas id="canvas"></canvas>
+    </div>
+
+</figure>
 <script>
 Array.from(
     document.querySelectorAll(".nojs")
@@ -26,6 +34,14 @@ Array.from(
 </script>
 <script src=" https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.min.js "></script>
 <script src="./assets/progress.js"></script>
+
+<figure>
+    <a href="./assets/map-promised-gathered.png" target="_blank">
+        <img src="./assets/map-promised-gathered.png" alt="World map showing locations of collected plankton imaging datasets, anticipated contributions, and contributing institutions."/>
+    </a>
+  <figcaption>Geographic distribution of plankton imaging datasets already collected by the AqQua project (colored dots, by instrument type) and anticipated contributions (light gray crosses) pledged by collaborators. Yellow stars mark contributing institutions.</figcaption>
+</figure>
+
 
 The goal of the AqQua project is to:
 
