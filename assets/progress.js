@@ -175,8 +175,13 @@ const BrokenAxisMarkPlugin = {
         // Draw previous months reference lines
         const category = chart.data.labels[index];
 
+        // Skip group headers (they start with "---")
+        if (category && category.startsWith("---")) {
+          return;
+        }
+
         // Draw a reference line for each previous month
-        if (window.allPreviousData && window.allPreviousMonths) {
+        if (window.allPreviousData && window.allPreviousMonths && category) {
           console.log(`Drawing reference lines for category: ${category}`);
           console.log("Available previous months:", window.allPreviousMonths);
           console.log("Previous data:", window.allPreviousData);
@@ -194,6 +199,7 @@ const BrokenAxisMarkPlugin = {
               if (!isNaN(previousX)) {
                 const barTop = bar.y - bar.height / 2;
                 const barBottom = bar.y + bar.height / 2;
+                const lineExtension = 8; // Extend line beyond bar boundaries
 
                 // Draw previous month reference line
                 ctx.save();
@@ -214,17 +220,17 @@ const BrokenAxisMarkPlugin = {
                 ];
 
                 ctx.strokeStyle = colors[monthIndex % colors.length];
-                ctx.lineWidth = 1.5; // Match legend lineWidth
+                ctx.lineWidth = 3; // Increased from 1.5 for better visibility
                 ctx.setLineDash(dashPatterns[monthIndex % dashPatterns.length]);
                 ctx.beginPath();
-                ctx.moveTo(previousX, barTop);
-                ctx.lineTo(previousX, barBottom);
+                ctx.moveTo(previousX, barTop - lineExtension);
+                ctx.lineTo(previousX, barBottom + lineExtension);
                 ctx.stroke();
                 ctx.setLineDash([]); // Reset line dash
                 ctx.restore();
 
                 console.log(
-                  `Drew reference line for ${monthLabel} at x=${previousX}`,
+                  `Drew reference line for ${monthLabel} at x=${previousX}`
                 );
               }
             }
@@ -326,6 +332,19 @@ const categoryToColor = {
   PlanktoScope: "#44AA99", // PlanktoScope
 };
 
+// Category-to-group mapping for grouping bars
+const categoryToGroup = {
+  PlanktonImager: "Flow Imaging (lab)",
+  FlowCam: "Flow Imaging (lab)",
+  PlanktoScope: "Flow Imaging (lab)",
+  IFCB: "Flow Imaging (in situ)",
+  ISIIS: "Flow Imaging (in situ)",
+  CPICS: "Darkfield",
+  UVP: "Darkfield",
+  Zooscan: "Scanner",
+  Other: "Other Systems",
+};
+
 let labels = [];
 let datasets = [];
 let chartInstance = null;
@@ -336,7 +355,7 @@ document.getElementById("scaleToggle").addEventListener("change", () => {
 
 function padWithNulls(arr, targetLength) {
   return arr.concat(
-    new Array(Math.max(targetLength - arr.length, 0)).fill(null),
+    new Array(Math.max(targetLength - arr.length, 0)).fill(null)
   );
 }
 
@@ -354,7 +373,7 @@ function getDataFilePath(filename) {
   const validatedFilename = validateDataPath(filename) ? filename : null;
   if (!validatedFilename) {
     throw new Error(
-      `Invalid data file: ${filename}. Only CSV files are allowed.`,
+      `Invalid data file: ${filename}. Only CSV files are allowed.`
     );
   }
   return `${DATA_FOLDER}${validatedFilename}`;
@@ -368,7 +387,7 @@ fetch(`${DATA_FOLDER}filelist.json`)
     const validFiles = fileList.filter(validateDataPath);
     if (validFiles.length !== fileList.length) {
       console.warn(
-        "Some files in filelist.json are not valid CSV files and will be ignored",
+        "Some files in filelist.json are not valid CSV files and will be ignored"
       );
     }
 
@@ -382,7 +401,7 @@ fetch(`${DATA_FOLDER}filelist.json`)
     console.log(`Loading latest data from assets/data: ${latestFile}`);
     console.log(
       `Loading comparison data for ${previousFiles.length} previous months from assets/data:`,
-      previousFiles,
+      previousFiles
     );
 
     // Load all CSV files using validated paths
@@ -453,26 +472,66 @@ fetch(`${DATA_FOLDER}filelist.json`)
     // Create categories list (use latest data as primary)
     const categories = latestHeaders;
 
+    // Group categories by their group
+    const groupedCategories = {};
+    const groupedData = {};
+    const groupedColors = {};
+
+    categories.forEach((cat) => {
+      const group = categoryToGroup[cat] || "Other Systems";
+      if (!groupedCategories[group]) {
+        groupedCategories[group] = [];
+        groupedData[group] = [];
+        groupedColors[group] = [];
+      }
+      groupedCategories[group].push(cat);
+      groupedData[group].push(latestData[cat]);
+      groupedColors[group].push(categoryToColor[cat] || "#999999");
+    });
+
+    // Create grouped labels and data arrays
+    const groupedLabels = [];
+    const groupedDataArray = [];
+    const groupedColorArray = [];
+
+    // Sort groups so that 'Other Systems' is always last
+    const groupOrder = Object.keys(groupedCategories).sort((a, b) => {
+      if (a === "Other Systems") return 1;
+      if (b === "Other Systems") return -1;
+      return 0;
+    });
+    groupOrder.forEach((group) => {
+      // Add group header
+      groupedLabels.push(`--- ${group} ---`);
+      groupedDataArray.push(null); // No data for group headers
+      groupedColorArray.push("#f0f0f0"); // Light gray for group headers
+
+      // Add individual categories
+      groupedCategories[group].forEach((cat, index) => {
+        groupedLabels.push(cat);
+        groupedDataArray.push(groupedData[group][index]);
+        groupedColorArray.push(groupedColors[group][index]);
+      });
+    });
+
     // Create Chart.js dataset
-    const backgroundColors = categories.map(
-      (cat) => categoryToColor[cat] || "#999999",
-    );
     const datasets = [
       {
         label: latestMonth,
-        data: categories.map((cat) => latestData[cat]),
-        backgroundColor: backgroundColors,
-        borderColor: backgroundColors,
-        borderWidth: 1,
+        data: groupedDataArray,
+        backgroundColor: groupedColorArray,
+        borderColor: groupedColorArray, // Match background color (no visible border)
+        borderWidth: 0,
       },
     ];
 
     // Store data globally for chart access
-    window.labels = categories;
+    window.labels = groupedLabels;
     window.datasets = datasets;
     window.allPreviousData = allPreviousData; // Store all previous months data
     window.allPreviousMonths = allPreviousMonths; // Store all previous month labels
     window.latestMonth = latestMonth;
+    window.originalCategories = categories; // Store original categories for reference lines
 
     // Calculate total images for latest month
     window.totalLatestImages = categories.reduce((total, cat) => {
@@ -526,20 +585,60 @@ fetch(`${DATA_FOLDER}filelist.json`)
       });
 
       const categories = latestHeaders;
-      const backgroundColors = categories.map(
-        (cat) => categoryToColor[cat] || "#999999",
-      );
+
+      // Group categories by their group (fallback)
+      const groupedCategories = {};
+      const groupedData = {};
+      const groupedColors = {};
+
+      categories.forEach((cat) => {
+        const group = categoryToGroup[cat] || "Other Systems";
+        if (!groupedCategories[group]) {
+          groupedCategories[group] = [];
+          groupedData[group] = [];
+          groupedColors[group] = [];
+        }
+        groupedCategories[group].push(cat);
+        groupedData[group].push(latestData[cat]);
+        groupedColors[group].push(categoryToColor[cat] || "#999999");
+      });
+
+      // Create grouped labels and data arrays (fallback)
+      const groupedLabels = [];
+      const groupedDataArray = [];
+      const groupedColorArray = [];
+
+      // Sort groups so that 'Other Systems' is always last (fallback)
+      const groupOrder = Object.keys(groupedCategories).sort((a, b) => {
+        if (a === "Other Systems") return 1;
+        if (b === "Other Systems") return -1;
+        return 0;
+      });
+      groupOrder.forEach((group) => {
+        // Add group header
+        groupedLabels.push(`--- ${group} ---`);
+        groupedDataArray.push(null); // No data for group headers
+        groupedColorArray.push("#f0f0f0"); // Light gray for group headers
+
+        // Add individual categories
+        groupedCategories[group].forEach((cat, index) => {
+          groupedLabels.push(cat);
+          groupedDataArray.push(groupedData[group][index]);
+          groupedColorArray.push(groupedColors[group][index]);
+        });
+      });
+
       const datasets = [
         {
           label: "2025/07",
-          data: categories.map((cat) => latestData[cat]),
-          backgroundColor: backgroundColors,
-          borderColor: backgroundColors,
-          borderWidth: 1,
+          data: groupedDataArray,
+          backgroundColor: groupedColorArray,
+          borderColor: groupedColorArray, // Match background color (no visible border)
+          borderWidth: 0,
         },
       ];
 
-      window.labels = categories;
+      window.labels = groupedLabels;
       window.datasets = datasets;
       window.allPreviousData = { "2025/06": previousData }; // Fallback format
       window.allPreviousMonths = ["2025/06"]; // Fallback format
@@ -611,7 +710,7 @@ function createChart() {
                     text: `${monthLabel} (reference line)`,
                     fillStyle: "transparent",
                     strokeStyle: colors[monthIndex % colors.length],
-                    lineWidth: 1.5,
+                    lineWidth: 3, // Increased from 1.5 for better visibility
                     lineDash: dashPatterns[monthIndex % dashPatterns.length],
                     pointStyle: "line",
                     boxWidth: 0,
@@ -630,8 +729,8 @@ function createChart() {
       datasets: {
         bar: {
           maxBarThickness: 64,
-          categoryPercentage: 0.6667,
-          barPercentage: 1.0,
+          categoryPercentage: 0.95, // Reduced from 1.0 to create small gaps between bars
+          barPercentage: 1.0, // Use full width of the category space
         },
       },
       scales: {
@@ -681,9 +780,29 @@ function createChart() {
         y: {
           stacked: false,
           ticks: {
-            font: { size: 16 },
+            font: function (context) {
+              const label = context.chart.data.labels[context.index];
+              if (label && label.startsWith("---")) {
+                return { size: 14, weight: "bold", color: "#666666" };
+              }
+              return { size: 16 };
+            },
+            color: function (context) {
+              const label = context.chart.data.labels[context.index];
+              if (label && label.startsWith("---")) {
+                return "#666666";
+              }
+              return "#000000";
+            },
             maxTicksLimit: false,
             autoSkip: false,
+            callback: function (value, index) {
+              const label = this.getLabelForValue(value);
+              if (label && label.startsWith("---")) {
+                return label.replace(/---\s*/, "").replace(/\s*---/, "");
+              }
+              return label;
+            },
           },
         },
       },
