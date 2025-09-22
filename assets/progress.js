@@ -199,7 +199,7 @@ const BrokenAxisMarkPlugin = {
               if (!isNaN(previousX)) {
                 const barTop = bar.y - bar.height / 2;
                 const barBottom = bar.y + bar.height / 2;
-                const lineExtension = 8; // Extend line beyond bar boundaries
+                const lineExtension = 4; // Reduced overhang for better layout
 
                 // Draw previous month reference line
                 ctx.save();
@@ -729,7 +729,7 @@ function createChart() {
       datasets: {
         bar: {
           maxBarThickness: 64,
-          categoryPercentage: 0.95, // Reduced from 1.0 to create small gaps between bars
+          categoryPercentage: 0.75, // Increased gaps between bars for better visual separation
           barPercentage: 1.0, // Use full width of the category space
         },
       },
