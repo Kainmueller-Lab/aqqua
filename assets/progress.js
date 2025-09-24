@@ -728,9 +728,9 @@ function createChart() {
       },
       datasets: {
         bar: {
-          maxBarThickness: 64,
-          categoryPercentage: 0.75, // Increased gaps between bars for better visual separation
-          barPercentage: 1.0, // Use full width of the category space
+          maxBarThickness: 64, // Keep original bar thickness
+          categoryPercentage: 0.6, // Reduced to create more vertical space between bars
+          barPercentage: 0.8, // Reduced to add padding around each bar
         },
       },
       scales: {
