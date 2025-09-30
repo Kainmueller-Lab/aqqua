@@ -20,7 +20,7 @@ The map shows where data has already been collected and where collaborators have
     Use Logarithmic Scale
     </label>
 
-    <div style="display: flex;justify-content: center; width: 100%; height: 1000px;">
+    <div style="display: flex;justify-content: center; width: 100%; height: 600px;">
         <canvas id="canvas"></canvas>
     </div>
 
