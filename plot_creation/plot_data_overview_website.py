@@ -258,7 +258,7 @@ def plot_data_overview(date: str, grouped: pd.DataFrame):
 
 def main():
 	# Load the TSV. Adjust path if needed.
-	date = '20250909'
+	date = '20250929'
 	month = date[4:6]
 	
 	tsv_path = os.path.join(os.path.dirname(__file__), f'ecotaxa_project_overviews/Ecotaxa_projects-list_{date}.tsv')
