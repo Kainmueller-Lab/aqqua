@@ -269,7 +269,7 @@ def main():
 
 	# save ecotaxa grouped data to CSV
 	grouped.columns = ['Instrument', 'Nb objects']
-	grouped.to_csv(os.path.join(os.path.dirname(__file__), f'ecotaxa_{date}_grouped.csv'), index=False)
+	grouped.to_csv(os.path.join(os.path.dirname(__file__), 'intermediate_data', f'ecotaxa_{date}_grouped.csv'), index=False)
 
 	grouped_final= combine_data( grouped, other_data_path)
 

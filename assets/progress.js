@@ -729,8 +729,8 @@ function createChart() {
       datasets: {
         bar: {
           maxBarThickness: 64, // Keep original bar thickness
-          categoryPercentage: 0.6, // Reduced to create more vertical space between bars
-          barPercentage: 0.8, // Reduced to add padding around each bar
+          categoryPercentage: 0.8, // Increased to make bars wider while keeping gaps
+          barPercentage: 0.9, // Increased to make each bar use more of its space
         },
       },
       scales: {
@@ -793,6 +793,13 @@ function createChart() {
                 return "#666666";
               }
               return "#000000";
+            },
+            align: function (context) {
+              const label = context.chart.data.labels[context.index];
+              if (label && label.startsWith("---")) {
+                return "start"; // Left-align category headers
+              }
+              return "end"; // Right-align device names (default)
             },
             maxTicksLimit: false,
             autoSkip: false,
