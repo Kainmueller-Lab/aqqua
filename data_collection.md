@@ -60,7 +60,7 @@ As production-run foundation model training will commence this fall, **the deadl
 
 **To participate, please carefully read and fill the online form below**. Note, some filling instructions and exemplary answers are provided via mouseover questionmarks. After clicking the "Submit" button at the end of the form, you will receive an email with your filled form for your records.
 
-Should you have any questions or suggestions, please check our **[FAQ]({{ 'data_collection_faq' | relative_url }})** or contact us at [aqqua@geomar.de](mailto:aqqua@geomar.de). We would be happy to have you on board!
+Should you have any questions or suggestions, please check our **[FAQ]({{ 'faq' | relative_url }})** or contact us at [aqqua@geomar.de](mailto:aqqua@geomar.de). We would be happy to have you on board!
 
 <!-- The Aquatic Life Foundation project (AqQua) aims to compile multimodal image datasets from contributing Helmholtz Centres, national and international partners to train a unified, accessible plankton image recognition model to help monitor and understand the health of our oceans. Vast contributions from the global community will complement data originating from Helmholtz centers and diverse, multimodal composition of the training data will ensure generalizability and performance of the AqQua Foundation Model. -->
 

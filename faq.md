@@ -5,17 +5,12 @@ filename: faq
 permalink: /faq/index.html
 ---
 
-If your question is not answered here, please don’t hesitate to contact us: aqqua@geomar.de
+# FAQs
+
+If your question is not answered here, please don't hesitate to contact us: [aqqua@geomar.de](mailto:aqqua@geomar.de)
 
 <details>
-<summary><strong>What kind of data are you looking for?</strong></summary>
-We’re gathering images of marine and freshwater zooplankton and phytoplankton. All kinds of labels/identification are welcome but optional, as we’re using self-supervised learning for training our foundational model, which does not require labels.
-</details>
-
-<details>
-<summary><strong>I have millions of images, do you want them all?</strong></summary>
-Yes, we try to gather all existing plankton images, as the foundation model requires as much image data from diverse regions and imaging devices as possible.
-</details>
+<summary><strong>Information on AqQua</strong></summary>
 
 <details>
 <summary><strong>What is a foundation model?</strong></summary>
@@ -23,23 +18,33 @@ A foundation model is a machine-learning model trained at scale, usually with se
 </details>
 
 <details>
-<summary><strong>How can I transfer my data?</strong></summary>
-If your data is on Ecotaxa, you can provide us with view access (see next question for details). If you use web hosting services (AZURE, GLOBUS, ...), you can share your dataset via these. We also can download image data from IFCB dashboards. You could also send us a harddrive. Other options (e.g. FTP, ...) would also be possible. Please inform us about your preferred method via the <a href="https://survey.hifis.dkfz.de/398984?lang=en">Data Sharing Form</a>.
-</details>
-
-<details>
-<summary><strong>My data is on EcoTaxa, how can I share it with you?</strong></summary> 
-Please fill in the <a href="https://survey.hifis.dkfz.de/398984?lang=en">Data Sharing Form</a> and also provide view access to the aqqua@geomar.de user on EcoTaxa. This enables us to download your data. We will inform you once we have downloaded your data, so that you can revoke access, if you would like to.
-</details>
-
-<details>
-<summary><strong>I have many projects on EcoTaxa that I would like to share. Is there something quicker than adding the AqQua user manually?</strong></summary>
-You can download these <a href="https://codebase.helmholtz.cloud/aqqua-public/ecotaxa-tools">Python scripts</a> that use the EcoTaxa API to generate a list of your EcoTaxa projects. You can at any time, should you wish to, change the access rights for multiple projects in bulk via the EcoTaxa API.
+<summary><strong>How will global interpolation work in detail?</strong></summary>
+You can explicitly choose if you would like to share your data for global interpolation studies within AqQua. We will then also need the volume sampled per image acquisition. We will used boosted regression trees and possibly other machine learning algorithms to learn the global plankton or particle distribution and associated process rates from the AqQua image data. Please see <a href="https://www.frontiersin.org/journals/marine-science/articles/10.3389/fmars.2022.894372/full">Drago et al. 2020</a> and Clements et al. (<a href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2021GB007276">2022</a>, <a href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2022GB007633">2023</a>) for further details.
 </details>
 
 <details>
 <summary><strong>How is AqQua funded?</strong></summary>
-AqQua is funded via the <a href="https://hfmi.helmholtz.de">Helmholtz Foundation Model Initiative</a>. It is a one-shot endeavour to collect the data and build the foundation model. The project is funded for three years. 
+AqQua is funded via the <a href="https://hfmi.helmholtz.de">Helmholtz Foundation Model Initiative</a>. It is a one-shot endeavour to collect the data and build the foundation model. The project is funded for three years.
+</details>
+
+</details>
+
+<details>
+<summary><strong> Data Collection</strong></summary>
+
+<details>
+<summary><strong>What kind of data are you looking for?</strong></summary>
+We’re gathering images of marine and freshwater zooplankton and phytoplankton. All kinds of labels/identification are welcome but optional, as we’re using self-supervised learning for training our foundational model, which does not require labels.
+</details>
+
+<details>
+<summary><strong>What do I gain from sharing data with you?</strong></summary>
+By sharing data with us for model development, you contribute to the diversity of the AqQua dataset and increase the chances that the developed model will be particularly useful to the kind of data that you are working with. Every data contributor will be co-author on a joint dataset paper and invited to contribute to further publications.
+</details>
+
+<details>
+<summary><strong>I have millions of images, do you want them all?</strong></summary>
+Yes, we try to gather all existing plankton images, as the foundation model requires as much image data from diverse regions and imaging devices as possible.
 </details>
 
 <details>
@@ -49,18 +54,8 @@ Using the AqQua Dataset, we will train a foundational model and fine-tune it for
 </details>
 
 <details>
-<summary><strong>How will global interpolation work in detail?</strong></summary>
-You can explicitly choose if you would like to share your data for global interpolation studies within AqQua. We will then also need the volume sampled per image acquisition. We will used boosted regression trees and possibly other machine learning algorithms to learn the global plankton or particle distribution and associated process rates from the AqQua image data. Please see <a href="https://www.frontiersin.org/journals/marine-science/articles/10.3389/fmars.2022.894372/full">Drago et al. 2020</a> and Clements et al. (<a href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2021GB007276">2022</a>, <a href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2022GB007633">2023</a>) for further details. 
-</details>
-
-<details>
-<summary><strong>What do I gain from sharing data with you?</strong></summary>
-By sharing data with us for model development, you contribute to the diversity of the AqQua dataset and increase the chances that the developed model will be particularly useful to the kind of data that you are working with. Every data contributor will be co-author on a joint dataset paper and invited to contribute to further publications.
-</details>
-
-<details>
-<summary><strong>Can I only contribute data with validated annotations?</strong></summary>
-All kinds of labels/identification are welcome but optional, as we’re using self-supervised learning for training our foundational model, which does not require labels.
+<summary><strong>Are you only interested in data with validated annotations?</strong></summary>
+No! Annotations are welcome but strictly optional as we’re using self-supervised learning for training our foundational model. This does <strong>not</strong> require labels.
 </details>
 
 <details>
@@ -74,4 +69,51 @@ All kinds of labels/identification are welcome but optional, as we’re using se
       <li>Click “Save”.</li>
     </ul>
   </p>
+</details>
+
+</details>
+
+<details>
+<summary><strong> Data Transfer</strong></summary>
+
+<details>
+<summary><strong>How can I transfer my data?</strong></summary>
+We support a number of different transfer methods. If you are unsure, please contact us and we will work together with you to determine the best option for your data.
+The optimal method depends largely on the size of the data. If the data is already externally accessible, you can just provide us with access to the existing location.
+Please inform us about your preferred method during the <a href="https://survey.hifis.dkfz.de/398984?lang=en">data sharing form submission</a>.
+The suggestions below are purely to support you in your choice, other options are always possible.
+</details>
+
+<details>
+<summary><strong>My data is larger than ~200GB</strong></summary>
+For such large datasets we recommend <a href="https://www.globus.org/">Globus</a> or using an FTP server.
+Please contact your IT department to find out if your institute provides a Globus instance and for information on how to set up a data share. Once set up, it allows for easy upload and download of terabyte-scale datasets.
+If Globus is not available we recommend using an FTP server. If you don't have one available, please contact us for access to our own FTP server. Transfers to an FTP server can be continued after an interruption without having to start from scratch.
+An alternative but still valid option would even be to send us a physical hard drive.
+</details>
+
+<details>
+<summary><strong>My data is larger than ~20GB and smaller than ~200GB</strong></summary>
+For datasets of this size we suggest <a href="https://gigamove.rwth-aachen.de">GigaMove</a>. This service allows one to upload files of up to 100GB and share access via a simple link.
+</details>
+
+<details>
+<summary><strong>My data is smaller than ~20GB</strong></summary>
+For datasets of this size we suggest to either use one of the options listed before or to use a cloud based storage system such as <a href="https://drive.google.com">google drive</a>, <a href="https://www.dropbox.com">dropbox</a> or <a href="https://nextcloud.com">nextcloud</a>.
+</details>
+
+<details>
+<summary><strong>My data is already on EcoTaxa, how can I share it with you?</strong></summary>
+If your data is already on EcoTaxa, you can share it with us by simply adding the <em>aqqua@geomar.de</em> user with <em>view</em> permissions to your project. This will enable us to download your data. We will inform you once we have downloaded your data, so that you can revoke access, if you would like to.
+</details>
+
+<details>
+<summary><strong>I have many projects on EcoTaxa that I would like to share. Is there something quicker than adding the AqQua user manually?</strong></summary>
+You can download these <a href="https://codebase.helmholtz.cloud/aqqua-public/ecotaxa-tools">Python scripts</a> that use the EcoTaxa API to access your EcoTaxa projects. 
+There are two scripts. The first one generates a list of all your projects. 
+You can use this list during the <a href="https://survey.hifis.dkfz.de/398984?lang=en">data sharing form submission</a>
+The second script helps you to easily add the AqQua user to a subset of your projects.
+You can at any time, should you wish to, change the access rights for multiple projects in bulk via the EcoTaxa API.
+</details>
+
 </details>
