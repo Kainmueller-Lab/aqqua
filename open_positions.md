@@ -1,7 +1,6 @@
 ---
 layout: default
 title: Open Positions
-filename: open_positions
 ---
 
 # Open Positions:
