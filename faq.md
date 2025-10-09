@@ -1,7 +1,6 @@
 ---
 layout: default
 title: FAQs
-filename: faq
 ---
 
 # FAQs
