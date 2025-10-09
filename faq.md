@@ -23,6 +23,11 @@ We will release the AqQua exploration tool that will enable visualization and cl
 </details>
 
 <details>
+<summary><strong>Image content differs a lot across instruments (modalities). How will AqQua deal with that? Is there any intent to leverage the diversity in the AqQua model?</strong></summary>
+Size information of plankton should help in identifying plankton classes across multiple instruments. Data from different modalities will enhance the AqQua model as there is overlap and mutual information in images from different modalities. However, we need to face challenge that model doesn’t just distinguish modalities but learns interesting plankton relevant features. Recent advances in ViTs that support multiple channels will also be leveraged.
+</details>
+
+<details>
 <summary><strong>Are you developing a common segmentation tool across instruments?</strong></summary>
 Depends on what is referred to by "segmentation". Many in-situ imaging platforms support segmentation of acquired frames into "regions of interest" (ROIs). The AqQua model will be trained for the downstream task of object segmentation on existing ROIs. While the AqQua model might generalize to the task of segmenting ROIs from full frames, this is not planned in the course of the project. 
 </details>
@@ -53,6 +58,21 @@ We’re gathering images of marine and freshwater zooplankton and phytoplankton.
 </details>
 
 <details>
+<summary><strong>What are the minimum metadata that AqQua needs?</strong></summary>
+We require date and time of image acquisition, the latitude, longitude and altitude of sampling and pixel resolution og the instrument. Image data without these required fields cannot be ingested by the AqQua model.
+</details>
+
+<details>
+<summary><strong>Are microscopy images of value? What about pre-segmented microscopy images?</strong></summary>
+Microscopy images are most welcome. We prefer segmented images for now. We might be able to generalize to ROI segmentation tasks in the future (see above) and will reach out for unsegmetned frames then.
+</details>
+
+<details>
+<summary><strong>Are plankton image data from lakes of value?</strong></summary>
+Yes, we welcome data from lakes and other fresh-water bodies. Please indicate the latitude, longitude and altitude at which these data were acquired. 
+</details>
+
+<details>
 <summary><strong>What do I gain from sharing data with you?</strong></summary>
 By sharing data with us for model development, you contribute to the diversity of the AqQua dataset and increase the chances that the developed model will be particularly useful to the kind of data that you are working with. Every data contributor will be co-author on a joint dataset paper and invited to contribute to further publications.
 </details>
@@ -68,14 +88,54 @@ Your data are still valuable as messy data helps models learn to handle noise.
 </details>
 
 <details>
+<summary><strong>My instrument outputs three copies of every image in different formats. Do I limit my data or filter it before sending it to you?</strong></summary>
+We at AqQua would like to make the process of data contribution as simple as possible. Please send all your data and indicate the particulars of the formats in the data sharing form. We will filter out the necessary format (raw images) on our end.
+</details>
+
+<details>
 <summary><strong>What will happen to the data that is shared with you?</strong></summary>
 We will build the AqQua Dataset by bringing together data from thousands of individual sources, a suite of different imaging devices, and from across diverse habitats. The AqQua Dataset will be published under an open-access license earliest in July 2027. Every data contribution will be duly acknowledged and every data contributor will be co-author on a joint dataset paper.
 Using the AqQua Dataset, we will train a foundational model and fine-tune it for multiple downstream tasks, including classification, trait extraction, and global interpolation of plankton and particle distribution. The developed code, models, and tools will be made open source and shared with the plankton imaging community to help with plankton image recognition tasks and to support further method development. For example, this could include contributing a generalist image recognition model to EcoTaxa.
 </details>
 
 <details>
+<summary><strong>If new data appears after form submission, should I fill out a new form? Also, if I want to share more data from a different intrument, should I fill out the form again?</strong></summary>
+It is recommended to fill out a new data sharing form in both of these cases as this helps with tracking, licensing and attribution.
+</details>
+
+<details>
+<summary><strong>I have already sent you an excel sheet with my datasets. Do I need to submit the data sharing form in addition to sending the excel file by email?</strong></summary>
+Yes, please fill out the data sharing form as this helps with tracking, licensing and attribution.
+</details>
+
+<details>
+<summary><strong>How fixed is the October 31st deadline?</strong></summary>
+It is enough to fill out the data sharing form until the deadline (see faq below as well).
+</details>
+
+<details>
+<summary><strong>Can new datasets be added after the October 31st deadline?</strong></summary>
+Please list all datasets, even potential ones or those not ready for transfer, before the deadline. This will help us plan our project. The data transfer itself can be carried out until the end of 2025.
+</details>
+
+<details>
 <summary><strong>Are you only interested in data with validated annotations?</strong></summary>
 No! Annotations are welcome but strictly optional as we’re using self-supervised learning for training our foundational model. This does <strong>not</strong> require labels.
+</details>
+
+<details>
+<summary><strong> Exactly what form will the data be made publicly accessible in the data release by July 2027?</strong></summary>
+Data will be published in the "AqQua Data Format": Images (blosc2 inside LMDB) + Converted Metadata (Parquet) + Raw Metadata (Parquet). We will select a place like Zenodo, where the data can be downloaded for analysis. Additionally, we might make the "AqQua Data Exploration Tool" for the visusalization of data a publicly available service.
+</details>
+
+<details>
+<summary><strong>Will the "AqQua Data Exploration Tool" let people see the original image with its metadata (latitude, longitude, temperature, etc) on an organism by organism level?</strong></summary>
+Yes, the idea of this tool is to visualize the embedding space and link to individual image + metadata.
+</details>
+
+<details>
+<summary><strong>How do multiple lab members get credited?</strong></summary>
+Yuo can use the comment field in the form to list additional contributors; the project team will follow up for necessary clarifications.
 </details>
 
 <details>
@@ -134,6 +194,11 @@ There are two scripts. The first one generates a list of all your projects.
 You can use this list during the <a href="https://survey.hifis.dkfz.de/398984?lang=en">data sharing form submission</a>
 The second script helps you to easily add the AqQua user to a subset of your projects.
 You can at any time, should you wish to, change the access rights for multiple projects in bulk via the EcoTaxa API.
+</details>
+
+<details>
+<summary><strong>How to submit data with custom segmentation masks (e.g. on squidle) andother complex metadata? Is it possible to use some other way than on Ecotaxa?</strong></summary>
+Please submit data sharing form and mention the type of metadata in the comments. It is possible to submit through other ways than going over EcoTaxa, the AqQua team will reach out to you and follow up on the transfer. 
 </details>
 
 </details>
