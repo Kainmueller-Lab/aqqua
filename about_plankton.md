@@ -1,7 +1,6 @@
 ---
 layout: default
 title: About Plankton
-filename: about_plankton
 ---
 Plankton are diverse, drifting organisms that are crucial members of aquatic foodwebs. Marine and freshwater foodwebs are essential to human well-being as they generate > 50% of atmospheric oxygen and about one third of the meat consumed by humans. The critical role of plankton in conservation of aquatic biodiversity and human nutrition needs to be understood and the knowledge used to serve decision making in the face of global change.
 
