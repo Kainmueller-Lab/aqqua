@@ -2,7 +2,6 @@
 layout: default
 title: FAQs
 filename: faq
-permalink: /faq/index.html
 ---
 
 # FAQs
