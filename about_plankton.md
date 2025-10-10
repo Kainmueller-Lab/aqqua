@@ -1,7 +1,6 @@
 ---
 layout: default
 title: About Plankton
-filename: about_plankton
 ---
 Plankton are diverse, drifting organisms that are crucial members of aquatic foodwebs. Marine and freshwater foodwebs are essential to human well-being as they generate > 50% of atmospheric oxygen and about one third of the meat consumed by humans. The critical role of plankton in conservation of aquatic biodiversity and human nutrition needs to be understood and the knowledge used to serve decision making in the face of global change.
 
@@ -24,6 +23,7 @@ Current AI-based approaches for pelagic images have tapped into comparatively sm
 ![Diatom image](./assets/plankton/diatom_chain.jpeg)
 
 The vast amounts of highly diverse data available, scarcity of labels and the distinct information content of pelagic images compared to standard computer vision data motivate the AqQua Foundation Model. There is huge potential for innovation by harmonising and leveraging the vast amounts of all available data for large-scale training. Such a model will establish consistency across imaging systems at likely disruptive downstream performance.
+
 
 
 
