@@ -258,7 +258,7 @@ def plot_data_overview(date: str, grouped: pd.DataFrame):
 
 def main():
 	# Load the TSV. Adjust path if needed.
-	date = '20250909'
+	date = '20250929'
 	month = date[4:6]
 	
 	tsv_path = os.path.join(os.path.dirname(__file__), f'ecotaxa_project_overviews/Ecotaxa_projects-list_{date}.tsv')
@@ -269,7 +269,7 @@ def main():
 
 	# save ecotaxa grouped data to CSV
 	grouped.columns = ['Instrument', 'Nb objects']
-	grouped.to_csv(os.path.join(os.path.dirname(__file__), f'ecotaxa_{date}_grouped.csv'), index=False)
+	grouped.to_csv(os.path.join(os.path.dirname(__file__), 'intermediate_data', f'ecotaxa_{date}_grouped.csv'), index=False)
 
 	grouped_final= combine_data( grouped, other_data_path)
 
