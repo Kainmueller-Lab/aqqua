@@ -5,3 +5,5 @@ _site
 vendor
 *.tmp.md
 .conda/
+*grouped.csv
+*test.html
