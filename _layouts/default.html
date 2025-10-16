@@ -32,10 +32,10 @@
 
     <main id="content" class="main-content" role="main">
       <div class="btn_justify">
-      {% unless true or page.name == "open_positions.md" %}
+      {% unless false or page.name == "open_positions.md" %}
 	<!-- change unless true to unless false to enable -->
       <div>
-      <a class="hiring_btn" href={{ 'open_positions' | relative_url }}>We're hiring! </a>
+      <a class="hiring_btn" href={{ '/25-10-15-ellis_phd_position' | relative_url }}>We're hiring! </a>
       </div>
       {% endunless %}
 
