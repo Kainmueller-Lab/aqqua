@@ -12,7 +12,7 @@ The map shows where data has already been collected and where collaborators have
 <figure>
     <span class="nojs"><em>Please enable javascript to see a more detailed plot of the current state of the data collection effort!</em><br><br>
     Overview of the images, split by instrument, already provided to the AqQua project so far:
-    <img src="./assets/data_collection_overview_20250704.png" alt="Data collection prgoress">
+    <img src="./assets/data_collection_overview_20250704.png" alt="Data collection progress">
     </span>
 
     <label>
@@ -20,7 +20,7 @@ The map shows where data has already been collected and where collaborators have
     Use Logarithmic Scale
     </label>
 
-    <div style="display: flex;justify-content: center; width: 100%; height: 400px;">
+    <div style="display: flex;justify-content: center; width: 100%; height: 600px;">
         <canvas id="canvas"></canvas>
     </div>
 
@@ -42,7 +42,6 @@ Array.from(
   <figcaption>Geographic distribution of plankton imaging datasets already collected by the AqQua project (colored dots, by instrument type) and anticipated contributions (light gray crosses) pledged by collaborators. Yellow stars mark contributing institutions.</figcaption>
 </figure>
 
-
 The goal of the AqQua project is to:
 
 - Build an AI foundation model of plankton image data,
@@ -61,7 +60,7 @@ As production-run foundation model training will commence this fall, **the deadl
 
 **To participate, please carefully read and fill the online form below**. Note, some filling instructions and exemplary answers are provided via mouseover questionmarks. After clicking the "Submit" button at the end of the form, you will receive an email with your filled form for your records.
 
-Should you have any questions or suggestions, please check our **[FAQ]({{ 'data_collection_faq' | relative_url }})** or contact us at [aqqua@geomar.de](mailto:aqqua@geomar.de). We would be happy to have you on board!
+Should you have any questions or suggestions, please check our **[FAQ]({{ 'faq' | relative_url }})** or contact us at [aqqua@geomar.de](mailto:aqqua@geomar.de). We would be happy to have you on board!
 
 <!-- The Aquatic Life Foundation project (AqQua) aims to compile multimodal image datasets from contributing Helmholtz Centres, national and international partners to train a unified, accessible plankton image recognition model to help monitor and understand the health of our oceans. Vast contributions from the global community will complement data originating from Helmholtz centers and diverse, multimodal composition of the training data will ensure generalizability and performance of the AqQua Foundation Model. -->
 

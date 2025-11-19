@@ -7,14 +7,39 @@ variables:
 before_script:
   - bundle install
 
-create-pages:
+.build-pages:
+  script:
+    - bundle exec jekyll build -d public --config _config_gitlab.yml --baseurl "$BASEURL"
+  artifacts:
+    paths:
+      - public
+  variables:
+    BASEURL: ""
+
+# Deploy as a page for default branch
+pages:
   stage: deploy
+  extends: .build-pages
   pages:
     # The folder that contains the files to be exposed at the Page URL
     publish: public
-  script:
-    - bundle exec jekyll build -d public --config _config_gitlab.yml
   rules:
-    # This ensures that only pushes to the default branch will trigger
-    # a pages deploy
-    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH # Run on default branch only
+  environment:
+    name: "View documentation"
+    url: $CI_PAGES_URL
+
+# Deploy the documentation as an artifact for all other branches
+pages-test:
+  stage: test
+  extends: .build-pages
+  rules:
+    - if: $CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH
+  environment:
+    # Instead of using GitLab pages, we directly link to the job artifacts
+    # ("Parallel deployments" are only supported in GitLab Premium.)
+    # We use a per-branch environment name to avoid conflicts with other MRs.
+    name: "docs/$CI_COMMIT_REF_SLUG"
+    url: "https://aqqua.pages.hzdr.de/-/AqQua-Webpage/-/jobs/$CI_JOB_ID/artifacts/public/index.html"
+  variables:
+    BASEURL: "/-/AqQua-Webpage/-/jobs/$CI_JOB_ID/artifacts/public"

@@ -18,7 +18,8 @@ This is the repository for our AqQua project page at <https://kainmueller-lab.gi
   gem install jekyll bundler
   ```
 - go to folder
-  ```
+
+  ```bash
   bundle install
   bundle update
   bundle exec jekyll serve
@@ -30,7 +31,7 @@ The [Jekyll Documentation](https://jekyllrb.com/docs/) contains detailed informa
 
 The content is written using `Markdown`, each file should begin with a header similar to this:
 
-```
+```yaml
 ---
 layout: default
 title: Title of page
