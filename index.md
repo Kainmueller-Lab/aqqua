@@ -1,8 +1,6 @@
 ---
 layout: default
 title: Home
-filename: index
-permalink: index.html
 ---
 
 **Each day, millions of plankton images are acquired by researchers around the globe. Each individual data point provides information about biodiversity, functioning of aquatic foodwebs and ecosystem status of the related water body.**
