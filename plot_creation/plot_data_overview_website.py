@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 import os
 import json
+import glob
+import shutil
 import matplotlib.pyplot as plt
 
 def load_and_group_data(tsv_path):
@@ -53,10 +55,45 @@ def load_and_group_data(tsv_path):
 	print(grouped)
 	return grouped
 
+
+def ensure_other_data_file(other_data_path: str) -> str:
+	"""Ensure an `other_{month}.csv` file exists, creating it from the latest backup if missing."""
+	if os.path.exists(other_data_path):
+		print(f"Using existing additional data file: {os.path.basename(other_data_path)}")
+		return other_data_path
+
+	other_dir = os.path.dirname(other_data_path)
+	pattern = os.path.join(other_dir, "other_*.csv")
+	fallback_candidates = []
+	for candidate_path in glob.glob(pattern):
+		candidate_name = os.path.basename(candidate_path)
+		if candidate_path == other_data_path:
+			continue
+		try:
+			month_part = candidate_name.split("_", 1)[1].split(".", 1)[0]
+			month_value = int(month_part)
+		except (IndexError, ValueError):
+			continue
+		fallback_candidates.append((month_value, candidate_path))
+
+	if not fallback_candidates:
+		raise FileNotFoundError(
+			f"Cannot create {os.path.basename(other_data_path)} because no prior other_*.csv files were found in {other_dir}."
+		)
+
+	# Choose the candidate with the highest month value as the most recent fallback.
+	fallback_candidates.sort(key=lambda item: item[0], reverse=True)
+	source_path = fallback_candidates[0][1]
+	shutil.copy2(source_path, other_data_path)
+	print(
+		f"Created {os.path.basename(other_data_path)} by copying from {os.path.basename(source_path)}."
+	)
+	return other_data_path
+
 def combine_data(grouped, other_data_path: str):
 	
 	# 4. Save data to CSV file
-	
+	# plot_creation/ecotaxa_project_overviews/Ecotaxa_projects-list_20251119.tsv
 
 	# Load other data from other_{month} file and add to grouped
 	if os.path.exists(other_data_path):
@@ -150,7 +187,6 @@ def save_and_plot_data(date: str, grouped: pd.DataFrame):
 
 	year = date[:4]
 	month = date[4:6]
-	day = date[6:]
 
 	date_label = f"{year}/{month}"
 	instruments_ordered: list = list(grouped.index)
@@ -258,18 +294,18 @@ def plot_data_overview(date: str, grouped: pd.DataFrame):
 
 def main():
 	# Load the TSV. Adjust path if needed.
-	date = '20251010'
+	date = '20251119'
 	month = date[4:6]
 	
 	tsv_path = os.path.join(os.path.dirname(__file__), f'ecotaxa_project_overviews/Ecotaxa_projects-list_{date}.tsv')
 	other_data_path = os.path.join(os.path.dirname(__file__), f'other_{month}.csv')
-
+	ensure_other_data_file(other_data_path)
 
 	grouped = load_and_group_data(tsv_path)
 
 	# save ecotaxa grouped data to CSV
 	grouped.columns = ['Instrument', 'Nb objects']
-	grouped.to_csv(os.path.join(os.path.dirname(__file__), f'ecotaxa_{date}_grouped.csv'), index=False)
+	grouped.to_csv(os.path.join(os.path.dirname(__file__), 'intermediate_data', f'ecotaxa_{date}_grouped.csv'), index=False)
 
 	grouped_final= combine_data( grouped, other_data_path)
 

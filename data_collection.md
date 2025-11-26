@@ -12,7 +12,7 @@ The map shows where data has already been collected and where collaborators have
 <figure>
     <span class="nojs"><em>Please enable javascript to see a more detailed plot of the current state of the data collection effort!</em><br><br>
     Overview of the images, split by instrument, already provided to the AqQua project so far:
-    <img src="./assets/data_collection_overview_20250704.png" alt="Data collection prgoress">
+    <img src="./assets/data_collection_overview_20250704.png" alt="Data collection progress">
     </span>
 
     <label>
@@ -20,7 +20,7 @@ The map shows where data has already been collected and where collaborators have
     Use Logarithmic Scale
     </label>
 
-    <div style="display: flex;justify-content: center; width: 100%; height: 400px;">
+    <div style="display: flex;justify-content: center; width: 100%; height: 600px;">
         <canvas id="canvas"></canvas>
     </div>
 
