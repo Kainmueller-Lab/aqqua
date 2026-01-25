@@ -182,11 +182,100 @@ def combine_data(grouped, other_data_path: str):
 	print(grouped)
 
 	return grouped	
+
+def get_previous_csv_data(current_date: str, data_dir: str):
+	"""
+	Find and load the previous month's CSV file to enforce minimum values.
+	Returns a dictionary mapping instrument names to their previous counts.
+	"""
+	# Parse current date (format: YYYYMM)
+	current_year = int(current_date[:4])
+	current_month = int(current_date[4:6])
 	
-def save_and_plot_data(date: str, grouped: pd.DataFrame):
+	# Calculate previous month
+	if current_month == 1:
+		prev_year = current_year - 1
+		prev_month = 12
+	else:
+		prev_year = current_year
+		prev_month = current_month - 1
+	
+	prev_filename = f"{prev_year}_{prev_month:02d}.csv"
+	prev_csv_path = os.path.join(data_dir, prev_filename)
+	
+	if not os.path.exists(prev_csv_path):
+		print(f"No previous CSV file found ({prev_filename}), skipping minimum value check.")
+		return {}
+	
+	print(f"Loading previous data from {prev_filename} to enforce minimum values...")
+	
+	# Read the previous CSV
+	with open(prev_csv_path, 'r') as f:
+		lines = f.readlines()
+	
+	if len(lines) < 2:
+		print("Previous CSV file is empty or malformed.")
+		return {}
+	
+	# Parse header and data
+	header = lines[0].strip().split(', ')
+	data = lines[1].strip().split(', ')
+	
+	# Skip the first column (Label)
+	instruments = header[1:]
+	counts = data[1:]
+	
+	# Create dictionary mapping instrument -> previous count
+	previous_data = {}
+	for instr, count_str in zip(instruments, counts):
+		try:
+			previous_data[instr] = int(count_str)
+		except ValueError:
+			print(f"Warning: Could not parse count for {instr}: {count_str}")
+			continue
+	
+	print(f"Loaded {len(previous_data)} instruments from previous CSV.")
+	return previous_data
+
+def enforce_minimum_values(grouped: pd.Series, previous_data: dict) -> pd.Series:
+	"""
+	Ensure that no instrument count is lower than its previous month's value.
+	Updates the grouped Series in place and reports any adjustments.
+	"""
+	if not previous_data:
+		return grouped
+	
+	adjustments_made = []
+	
+	for instrument in grouped.index:
+		if instrument in previous_data:
+			prev_value = previous_data[instrument]
+			current_value = grouped[instrument]
+			
+			if current_value < prev_value:
+				adjustments_made.append(
+					f"{instrument}: {current_value:,.0f} -> {prev_value:,.0f}"
+				)
+				grouped[instrument] = prev_value
+	
+	if adjustments_made:
+		print("\n⚠️  Minimum value adjustments made (values increased to match previous month):")
+		for adj in adjustments_made:
+			print(f"  {adj}")
+	else:
+		print("✓ All values are equal to or greater than previous month.")
+	
+	return grouped
+
+def save_and_plot_data(date: str, grouped: pd.Series):
 
 	year = date[:4]
 	month = date[4:6]
+
+	# Enforce minimum values based on previous month
+	data_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "assets", "data")
+	previous_data = get_previous_csv_data(date, data_dir)
+	grouped = enforce_minimum_values(grouped, previous_data)
 
 	date_label = f"{year}/{month}"
 	instruments_ordered: list = list(grouped.index)
@@ -249,7 +338,7 @@ def save_and_plot_data(date: str, grouped: pd.DataFrame):
 	# Also print the total
 	print(f"Total: {grouped.sum():,.0f}")
 
-def plot_data_overview(date: str, grouped: pd.DataFrame):
+def plot_data_overview(date: str, grouped: pd.Series):
 
 
 
@@ -294,7 +383,7 @@ def plot_data_overview(date: str, grouped: pd.DataFrame):
 
 def main():
 	# Load the TSV. Adjust path if needed.
-	date = '20251119'
+	date = '20260121'
 	month = date[4:6]
 	
 	tsv_path = os.path.join(os.path.dirname(__file__), f'ecotaxa_project_overviews/Ecotaxa_projects-list_{date}.tsv')
