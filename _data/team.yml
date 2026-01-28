@@ -76,6 +76,14 @@
     expertise: "Pelagic Imaging, Biogeochemical Modeling"
     picture: "Joelle_Habib.jpg"
 
+  - first_name: "Ole"
+    last_name: "Johannsen"
+    title: "Dr."
+    position: "PostDoc"
+    affiliation: "Max Delbrück Center for Molecular Medicine in the Helmholtz Association (MDC), Helmholtz Imaging"
+    expertise: "AI, scalable image analysis methods and visualizations"
+    picture: "Ole_Johannsen.jpg"
+
   - first_name: "Riccardo"
     last_name: "Massei"
     title: "Dr."
