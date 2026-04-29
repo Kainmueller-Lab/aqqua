@@ -108,6 +108,14 @@
     expertise: "AI methods"
     picture: "Asma_Javaid.jpg"
 
+  - first_name: "Usman"
+    last_name: "Rashid"
+    title: ""
+    position: "Research Software Engineer"
+    affiliation: "Max Delbrück Center for Molecular Medicine in the Helmholtz Association (MDC)"
+    expertise: "Software Engineering"
+    picture: "Usman_Rashid.jpg"
+
   - first_name: "Johann"
     last_name: "Schulze Tast"
     title: ""
