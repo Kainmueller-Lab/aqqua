@@ -57,7 +57,7 @@ def load_and_group_data(tsv_path):
 
 
 def ensure_other_data_file(other_data_path: str) -> str:
-	"""Ensure an `other_{month}.csv` file exists, creating it from the latest backup if missing."""
+	"""Ensure an `other_{YYYYMM}.csv` file exists, creating it from the most recent prior snapshot if missing."""
 	if os.path.exists(other_data_path):
 		print(f"Using existing additional data file: {os.path.basename(other_data_path)}")
 		return other_data_path
@@ -70,18 +70,20 @@ def ensure_other_data_file(other_data_path: str) -> str:
 		if candidate_path == other_data_path:
 			continue
 		try:
-			month_part = candidate_name.split("_", 1)[1].split(".", 1)[0]
-			month_value = int(month_part)
+			year_month_part = candidate_name.split("_", 1)[1].split(".", 1)[0]
+			if len(year_month_part) != 6:
+				continue
+			year_month_value = int(year_month_part)
 		except (IndexError, ValueError):
 			continue
-		fallback_candidates.append((month_value, candidate_path))
+		fallback_candidates.append((year_month_value, candidate_path))
 
 	if not fallback_candidates:
 		raise FileNotFoundError(
-			f"Cannot create {os.path.basename(other_data_path)} because no prior other_*.csv files were found in {other_dir}."
+			f"Cannot create {os.path.basename(other_data_path)} because no prior other_YYYYMM.csv files were found in {other_dir}."
 		)
 
-	# Choose the candidate with the highest month value as the most recent fallback.
+	# Choose the candidate with the highest YYYYMM value as the most recent fallback.
 	fallback_candidates.sort(key=lambda item: item[0], reverse=True)
 	source_path = fallback_candidates[0][1]
 	shutil.copy2(source_path, other_data_path)
@@ -95,7 +97,7 @@ def combine_data(grouped, other_data_path: str):
 	# 4. Save data to CSV file
 	# plot_creation/ecotaxa_project_overviews/Ecotaxa_projects-list_20251119.tsv
 
-	# Load other data from other_{month} file and add to grouped
+	# Load other data from other_{YYYYMM} file and add to grouped
 	if os.path.exists(other_data_path):
 		print(f"Loading additional data from {other_data_path}...")
 		other_df = pd.read_csv(other_data_path)
@@ -344,8 +346,7 @@ def plot_data_overview(date: str, grouped: pd.Series):
 
 	fig, ax = plt.subplots(figsize=(12,2)) 
 
-	# leave room to display up to 500 million objects on the x-axis
-	plt.xlim(0, 2_000_000_000)
+	plt.xlim(0, grouped.sum() * 1.02)
 	# Convert to numpy array for cumulative sum
 	values = np.array(grouped.values)
 	instruments = grouped.index
@@ -383,11 +384,13 @@ def plot_data_overview(date: str, grouped: pd.Series):
 
 def main():
 	# Load the TSV. Adjust path if needed.
-	date = '20260121'
-	month = date[4:6]
-	
+	# `date` is YYYYMMDD; the companion `other_{YYYYMM}.csv` file is auto-copied
+	# from the most recent prior snapshot if it does not exist yet.
+	date = '20260608'
+	year_month = date[:6]
+
 	tsv_path = os.path.join(os.path.dirname(__file__), f'ecotaxa_project_overviews/Ecotaxa_projects-list_{date}.tsv')
-	other_data_path = os.path.join(os.path.dirname(__file__), f'other_{month}.csv')
+	other_data_path = os.path.join(os.path.dirname(__file__), f'other_{year_month}.csv')
 	ensure_other_data_file(other_data_path)
 
 	grouped = load_and_group_data(tsv_path)
@@ -399,7 +402,7 @@ def main():
 	grouped_final= combine_data( grouped, other_data_path)
 
 	save_and_plot_data(date, grouped_final)
-	# Save the final grouped data to CSV and plot
+	plot_data_overview(date, grouped_final)
 
 if __name__ == "__main__":
 	main()
