@@ -319,6 +319,15 @@ const colorList = [
   "#95DEE3",
 ];
 
+// Normalize raw CSV header names to the short display names used everywhere
+// (colors, groups, axis labels). Maps any long-form variants to a clean name.
+const categoryAliases = {
+  "DSPC (Dual-magnification Scripps Plankton Camera)": "DSPC",
+};
+function normalizeCategory(name) {
+  return categoryAliases[name] || name;
+}
+
 // New category-to-color mapping for bar colors
 const categoryToColor = {
   PlanktonImager: "#44AA99", // Plankton Imager
@@ -330,6 +339,7 @@ const categoryToColor = {
   FlowCam: "#44AA99", // FlowCam
   ISIIS: "#DDCC77", // ISIIS
   PlanktoScope: "#44AA99", // PlanktoScope
+  DSPC: "#332288", // Darkfield
 };
 
 // Category-to-group mapping for grouping bars
@@ -343,6 +353,7 @@ const categoryToGroup = {
   UVP: "Darkfield",
   Zooscan: "Scanner",
   Other: "Other Systems",
+  DSPC: "Darkfield",
 };
 
 let labels = [];
@@ -426,7 +437,7 @@ fetch(`${DATA_FOLDER}filelist.json`)
     const latestHeaders = latestLines[0]
       .split(",")
       .slice(1)
-      .map((h) => h.trim());
+      .map((h) => normalizeCategory(h.trim()));
     const latestValues = latestLines[1]
       .split(",")
       .slice(1)
@@ -436,13 +447,16 @@ fetch(`${DATA_FOLDER}filelist.json`)
     const allPreviousData = {};
     const allPreviousMonths = [];
 
+    // Create an object to track the maximum seen values to enforce monotonic increase
+    const maxSeen = {};
+
     previousFiles.forEach((file, fileIndex) => {
       const previousText = previousTexts[fileIndex];
       const previousLines = previousText.trim().split("\n");
       const previousHeaders = previousLines[0]
         .split(",")
         .slice(1)
-        .map((h) => h.trim());
+        .map((h) => normalizeCategory(h.trim()));
       const previousValues = previousLines[1]
         .split(",")
         .slice(1)
@@ -451,7 +465,20 @@ fetch(`${DATA_FOLDER}filelist.json`)
       const previousData = {};
       previousHeaders.forEach((cat, i) => {
         const num = previousValues[i] === "" ? null : Number(previousValues[i]);
-        previousData[cat] = isNaN(num) ? null : num;
+        let val = isNaN(num) ? null : num;
+
+        // Enforce monotonic increase: value cannot be less than historically seen
+        if (val !== null) {
+          if (maxSeen[cat] !== undefined && val < maxSeen[cat]) {
+            val = maxSeen[cat];
+          } else {
+            maxSeen[cat] = val;
+          }
+        } else if (maxSeen[cat] !== undefined) {
+          val = maxSeen[cat];
+        }
+
+        previousData[cat] = val;
       });
 
       const monthLabel = file.replace(".csv", "").replace("_", "/");
@@ -463,7 +490,18 @@ fetch(`${DATA_FOLDER}filelist.json`)
     const latestData = {};
     latestHeaders.forEach((cat, i) => {
       const num = latestValues[i] === "" ? null : Number(latestValues[i]);
-      latestData[cat] = isNaN(num) ? null : num;
+      let val = isNaN(num) ? null : num;
+
+      // Enforce monotonic increase
+      if (val !== null) {
+        if (maxSeen[cat] !== undefined && val < maxSeen[cat]) {
+          val = maxSeen[cat];
+        }
+      } else if (maxSeen[cat] !== undefined) {
+        val = maxSeen[cat];
+      }
+
+      latestData[cat] = val;
     });
 
     // Extract month/year info from filenames for display
@@ -555,7 +593,7 @@ fetch(`${DATA_FOLDER}filelist.json`)
       const latestHeaders = latestLines[0]
         .split(",")
         .slice(1)
-        .map((h) => h.trim());
+        .map((h) => normalizeCategory(h.trim()));
       const latestValues = latestLines[1]
         .split(",")
         .slice(1)
@@ -565,7 +603,7 @@ fetch(`${DATA_FOLDER}filelist.json`)
       const previousHeaders = previousLines[0]
         .split(",")
         .slice(1)
-        .map((h) => h.trim());
+        .map((h) => normalizeCategory(h.trim()));
       const previousValues = previousLines[1]
         .split(",")
         .slice(1)
@@ -573,15 +611,29 @@ fetch(`${DATA_FOLDER}filelist.json`)
 
       const latestData = {};
       const previousData = {};
-
-      latestHeaders.forEach((cat, i) => {
-        const num = latestValues[i] === "" ? null : Number(latestValues[i]);
-        latestData[cat] = isNaN(num) ? null : num;
-      });
+      const fallbackMaxSeen = {};
 
       previousHeaders.forEach((cat, i) => {
         const num = previousValues[i] === "" ? null : Number(previousValues[i]);
-        previousData[cat] = isNaN(num) ? null : num;
+        let val = isNaN(num) ? null : num;
+        if (val !== null) fallbackMaxSeen[cat] = val;
+        previousData[cat] = val;
+      });
+
+      latestHeaders.forEach((cat, i) => {
+        const num = latestValues[i] === "" ? null : Number(latestValues[i]);
+        let val = isNaN(num) ? null : num;
+        
+        // Enforce monotonic increase
+        if (val !== null) {
+          if (fallbackMaxSeen[cat] !== undefined && val < fallbackMaxSeen[cat]) {
+            val = fallbackMaxSeen[cat];
+          }
+        } else if (fallbackMaxSeen[cat] !== undefined) {
+          val = fallbackMaxSeen[cat];
+        }
+        
+        latestData[cat] = val;
       });
 
       const categories = latestHeaders;
@@ -658,6 +710,39 @@ function createChart() {
 
   if (chartInstance) {
     chartInstance.destroy();
+  }
+
+  // Derive the axis maximum from the data so it is never capped at a fixed
+  // value (e.g. previously hardcoded at 2 billion). Includes both the current
+  // bars and the previous-month reference lines, with a little headroom.
+  const dataValues = [];
+  (window.datasets?.[0]?.data || []).forEach((v) => {
+    if (v != null) dataValues.push(v);
+  });
+  if (window.allPreviousData) {
+    Object.values(window.allPreviousData).forEach((month) => {
+      Object.values(month).forEach((v) => {
+        if (v != null) dataValues.push(v);
+      });
+    });
+  }
+  const dataMax = dataValues.length ? Math.max(...dataValues) : 1e9;
+  // Round up to a "nice" 1/2/5 * 10^n value with ~5% headroom.
+  const roundUpNice = (x) => {
+    const base = Math.pow(10, Math.floor(Math.log10(x)));
+    const frac = x / base;
+    const niceFrac = frac <= 1 ? 1 : frac <= 2 ? 2 : frac <= 5 ? 5 : 10;
+    return niceFrac * base;
+  };
+  const axisMax = roundUpNice(dataMax * 1.05);
+
+  // Build logarithmic ticks (1/2/5 per decade) up to the dynamic maximum.
+  const logTicks = [];
+  for (let e = 6; Math.pow(10, e) <= axisMax; e++) {
+    [1, 2, 5].forEach((m) => {
+      const v = m * Math.pow(10, e);
+      if (v <= axisMax) logTicks.push({ value: v });
+    });
   }
 
   const ctx = document.getElementById("canvas").getContext("2d");
@@ -744,8 +829,8 @@ function createChart() {
               ? "Number of images provided"
               : "Number of images provided (broken axis)",
           },
-          min: 1_000_000,
-          max: 2_000_000_000,
+          min: 0, //1_000_000,
+          max: axisMax,
           ticks: {
             callback: function (value) {
               if (value >= 1e9) return (value / 1e9).toFixed(1) + " Billion";
@@ -761,19 +846,7 @@ function createChart() {
           grid: { drawTicks: true, drawOnChartArea: true },
           afterBuildTicks: (scale) => {
             if (useLog) {
-              scale.ticks = [
-                { value: 1e6 },
-                { value: 2e6 },
-                { value: 5e6 },
-                { value: 1e7 },
-                { value: 2e7 },
-                { value: 5e7 },
-                { value: 1e8 },
-                { value: 2e8 },
-                { value: 5e8 },
-                { value: 1e9 },
-                { value: 2e9 },
-              ];
+              scale.ticks = logTicks;
             }
           },
         },
