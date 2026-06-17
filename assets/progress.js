@@ -829,7 +829,7 @@ function createChart() {
               ? "Number of images provided"
               : "Number of images provided (broken axis)",
           },
-          min: 0, //1_000_000,
+          min: useLog ? 1_000_000 : 0,
           max: axisMax,
           ticks: {
             callback: function (value) {

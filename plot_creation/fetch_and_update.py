@@ -180,7 +180,7 @@ def write_csv(counts: dict[str, int], date: datetime) -> Path:
     if filelist_path.exists():
         filelist = json.loads(filelist_path.read_text(encoding="utf-8"))
         if filelist:
-            last_file = filelist[-1]
+            last_file = sorted(filelist)[-1]
             last_path = DATA_DIR / last_file
             if last_path.exists():
                 with last_path.open("r", encoding="utf-8") as f:
@@ -212,6 +212,7 @@ def update_filelist(filename: str) -> None:
     filelist = json.loads(filelist_path.read_text(encoding="utf-8")) if filelist_path.exists() else []
     if filename not in filelist:
         filelist.append(filename)
+        filelist.sort()
         filelist_path.write_text(json.dumps(filelist, indent=2) + "\n", encoding="utf-8")
         print(f"Added {filename} to filelist.json")
     else:
