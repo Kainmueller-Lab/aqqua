@@ -7,3 +7,4 @@ vendor
 .conda/
 *grouped.csv
 *test.html
+.DS_Store
