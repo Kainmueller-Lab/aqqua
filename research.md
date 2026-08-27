@@ -47,5 +47,5 @@ AqQua is supported by more than 40 international partners from research institut
 
 ## Already published tools:
 
-- Script to convert Latitude/Longitude to Longhurst region codes: https://github.com/Kainmueller-Lab/AqQua-LatLon-to-Region
-- pure Python reader for CytoSense files, no other dependencies such as .NET or proprietary DLLs: https://github.com/abred/pycyz
+- Script to convert Latitude/Longitude to Longhurst region codes: [AqQua-LatLon-to-Region](https://github.com/Kainmueller-Lab/AqQua-LatLon-to-Region)
+- pure Python reader for CytoSense files, no other dependencies such as .NET or proprietary DLLs: [pycyz](https://github.com/abred/pycyz)
