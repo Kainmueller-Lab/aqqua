@@ -84,6 +84,14 @@
     expertise: "AI, scalable image analysis methods and visualizations"
     picture: "Ole_Johannsen.jpg"
 
+  - first_name: "Bianca"
+    last_name: "Thobor"
+    title: "Dr."
+    position: "PostDoc"
+    affiliation: "GEOMAR Helmholtz Centre for Ocean Research Kiel"
+    expertise: "Marine Biogeochemistry, Biological Oceanography"
+    picture: "Bianca_Thobor.jpg"
+
   - first_name: "Riccardo"
     last_name: "Massei"
     title: "Dr."
@@ -108,6 +116,14 @@
     expertise: "AI methods"
     picture: "Asma_Javaid.jpg"
 
+  - first_name: "Nick"
+    last_name: "Lechtenbörger"
+    title: ""
+    position: "PhD student"
+    affiliation: "Max Delbrück Center for Molecular Medicine in the Helmholtz Association (MDC), Helmholtz Imaging"
+    expertise: "AI methods"
+    picture: "Nick_Lechtenboerger.jpg"
+
   - first_name: "Usman"
     last_name: "Rashid"
     title: ""
@@ -122,13 +138,6 @@
     position: "Student assistant and MSc student"
     affiliation: "Hasso-Plattner-Institut (HPI)"
     picture: "Johann_Schulze_Tast.jpg"
-
-  - first_name: "Nick"
-    last_name: "Lechtenbörger"
-    title: ""
-    position: "Student assistant and MSc student"
-    affiliation: "Hasso-Plattner-Institut (HPI)"
-    picture: "Nick_Lechtenboerger.jpg"
 
   - first_name: "Oliver"
     last_name: "Schulz"
