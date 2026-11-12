@@ -68,7 +68,3 @@ github:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
-
-# Not part of the public site.
-exclude:
-  - website/beast.pdf
