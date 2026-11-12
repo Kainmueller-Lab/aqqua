@@ -5,26 +5,40 @@ description: "Explore and annotate millions of images through the embedding spac
 ---
 
 # BEAST - Embedding Analysis and Selection Tool
+{:.no_toc}
 
 <!-- TEMPORARY: conference box. Remove it after the demo period. Fill in both survey URLs and the demo URL. -->
 <div class="demo-box" markdown="1">
 
 **Try the BEAST demo**
 
-A demo instance of BEAST is running. You need a username and password to log in. We hand them
-out at the World Conference on Marine Biodiversity (WCMB 2026). You can also request them in our
-first survey:
+A demo instance of BEAST is running. You need a **username and password** to log in. We hand them
+out at the World Conference on Marine Biodiversity (WCMB 2026). You can also **request them in our
+first survey**:
 
 1. **Before you try BEAST:** We kindly ask you to take our [survey](https://TODO-survey-1). It
    asks what you need, what your data looks like and how you want to use BEAST.  
 2. **Try BEAST:** open the [demo](https://TODO-demo), our [tutorial]({% link beast_tutorial.md %}) can guide you.
 3. **After you try BEAST:** Afterwards, we would be thankfull for your feedback. We prepared a second [survey](https://TODO-survey-2). It asks
-   what worked, what did not, and what you could not find. You can also send your feedback to [aqqua@geomar.de](mailto:aqqua@geomar.de) or [ole.johannsen@mdc-berlin.de](mailto:ole.johannsen@mdc-berlin.de).
+   what worked, what did not, and what you could not find. You can also send your feedback to [aqqua@geomar.de](mailto:aqqua@geomar.de).
 
 Each survey takes about four minutes, and every question is optional. At the end of survey 1
 you can leave your e-mail address. We can then send you the login data, add you to the BEAST
 newsletter or the AqQua newsletter, and note your interest in becoming a pilot partner.
 
+<p class="btn-row">
+  <a class="demo-btn" href="https://TODO-demo">Open the demo</a>
+  <a class="demo-btn demo-btn-light" href="{% link beast_tutorial.md %}">Read the tutorial</a>
+</p>
+
+</div>
+
+<!-- Table of contents: delete this comment and the toc-box block below to remove it. -->
+<div class="toc-box" markdown="1">
+**On this page**
+
+* TOC
+{:toc}
 </div>
 
 BEAST is a browser-based tool to explore, analyse and annotate large image collections. It lays
@@ -57,6 +71,8 @@ BEAST is under active development. The current focus is dataset curation, and th
 this use. Curation matters for both groups. A cleaner dataset also gives machine learning
 researchers better models.
 
+---
+
 ## Large collections need exploration
 
 A single plankton imaging deployment can come back with millions of images. A high-throughput
@@ -77,7 +93,7 @@ Labels serve two purposes:
 - **Training.** Labels are training data for a deep learning classifier. The classifier can then
   annotate future datasets of the same kind.
 
-
+---
 
 ## How BEAST works
 
@@ -151,6 +167,12 @@ annotates the rest of the collection, and future collections of the same kind.
   <figcaption>Labels can be created by making selections in the scatterplot. They can overlap freely and combined with filters on metadata. The images in the image grid have borders colored corresponding to their labels.</figcaption>
 </figure>
 
+<div class="tutorial-callout" markdown="1">
+**Want to try it?** The tutorial walks through each step with the demo.
+
+<p class="btn-row"><a class="demo-btn" href="{% link beast_tutorial.md %}">Read the tutorial</a></p>
+</div>
+
 ---
 
 ## Scale and deployment
@@ -198,6 +220,3 @@ no good way to explore it, tell us about your use case: [aqqua@geomar.de](mailto
 - van der Maaten, L. and Hinton, G. (2008). Visualizing Data using t-SNE. *Journal of Machine
   Learning Research* 9, 2579–2605.
   [jmlr.org/papers/v9/vandermaaten08a.html](https://jmlr.org/papers/v9/vandermaaten08a.html).
-- Schröder, S.-M., Kiko, R. and Koch, R. (2020). MorphoCluster: Efficient Annotation of Plankton
-  Images by Clustering. *Sensors* 20(11), 3060.
-  [doi:10.3390/s20113060](https://doi.org/10.3390/s20113060).
