@@ -45,3 +45,66 @@ figure {
 figcaption {
   font-size: 90%;
 }
+
+.demo-box {
+  margin: 1em 0 1.5em;
+  padding: 0.5em 1.2em;
+  border: 2px solid #157878;
+  border-radius: 0.5em;
+  background: #eef7f7;
+}
+
+.demo-box p:first-child {
+  font-size: 1.1em;
+}
+
+/* Lightbox: see assets/lightbox.js */
+a.lightbox img {
+  cursor: zoom-in;
+  max-width: 100%;
+  height: auto;
+}
+
+dialog.lightbox-dialog {
+  max-width: 96vw;
+  max-height: 96vh;
+  padding: 0;
+  border: none;
+  background: transparent;
+  overflow: visible;
+  text-align: center;
+}
+
+dialog.lightbox-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.85);
+}
+
+dialog.lightbox-dialog img {
+  display: block;
+  max-width: 96vw;
+  max-height: 88vh;
+  margin: 0 auto;
+  cursor: zoom-out;
+  background: #fff;
+}
+
+.lightbox-caption {
+  margin: 0.5em 0 0;
+  color: #fff;
+  font-size: 90%;
+}
+
+.lightbox-close {
+  position: fixed;
+  top: 0.4em;
+  right: 0.6em;
+  width: 2em;
+  height: 2em;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  color: #000;
+  font-size: 1.6em;
+  line-height: 1;
+  cursor: pointer;
+}
