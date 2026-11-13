@@ -16,18 +16,18 @@ A demo instance of BEAST is running. You need a **username and password** to log
 out at the World Conference on Marine Biodiversity (WCMB 2026). You can also **request them in our
 first survey**:
 
-1. **Before you try BEAST:** We kindly ask you to take our [survey](https://TODO-survey-1). It
+1. **Before you try BEAST:** We kindly ask you to take our [survey](https://survey.mdc-berlin.de/beast). It
    asks what you need, what your data looks like and how you want to use BEAST.  
-2. **Try BEAST:** open the [demo](https://TODO-demo), our [tutorial]({% link beast_tutorial.md %}) can guide you.
-3. **After you try BEAST:** Afterwards, we would be thankfull for your feedback. We prepared a second [survey](https://TODO-survey-2). It asks
+2. **Try BEAST:** open the [demo](https://aqqua-beast-demo.mdc-berlin.de/), our [tutorial]({% link beast_tutorial.md %}) can guide you.
+3. **After you try BEAST:** Afterwards, we would be thankful for your feedback. We prepared a second [survey](https://survey.mdc-berlin.de/beast-feedback). It asks
    what worked, what did not, and what you could not find. You can also send your feedback to [aqqua@geomar.de](mailto:aqqua@geomar.de).
 
-Each survey takes about four minutes, and every question is optional. At the end of survey 1
-you can leave your e-mail address. We can then send you the login data, add you to the BEAST
-newsletter or the AqQua newsletter, and note your interest in becoming a pilot partner.
+Each survey takes about three minutes, and every question is optional. At the end of survey 1
+you can leave your e-mail address. We can then send you the login data and add you to the BEAST
+newsletter or the AqQua newsletter.
 
 <p class="btn-row">
-  <a class="demo-btn" href="https://TODO-demo">Open the demo</a>
+  <a class="demo-btn" href="https://aqqua-beast-demo.mdc-berlin.de/">Open the demo</a>
   <a class="demo-btn demo-btn-light" href="{% link beast_tutorial.md %}">Read the tutorial</a>
 </p>
 
