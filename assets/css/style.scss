@@ -45,3 +45,115 @@ figure {
 figcaption {
   font-size: 90%;
 }
+
+.demo-box,
+.tutorial-callout {
+  margin: 1.5em 0;
+  padding: 0.3em 1.2em;
+  border-left: 5px solid #157878;
+  background: #eef7f7;
+}
+
+.demo-box p:first-child {
+  font-size: 1.1em;
+}
+
+/* Lightbox: see assets/lightbox.js */
+a.lightbox img {
+  cursor: zoom-in;
+  max-width: 100%;
+  height: auto;
+}
+
+dialog.lightbox-dialog {
+  max-width: 96vw;
+  max-height: 96vh;
+  padding: 0;
+  border: none;
+  background: transparent;
+  overflow: visible;
+  text-align: center;
+}
+
+dialog.lightbox-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.85);
+}
+
+dialog.lightbox-dialog img {
+  display: block;
+  max-width: 96vw;
+  max-height: 88vh;
+  margin: 0 auto;
+  cursor: zoom-out;
+  background: #fff;
+}
+
+.lightbox-caption {
+  margin: 0.5em 0 0;
+  color: #fff;
+  font-size: 90%;
+}
+
+.lightbox-close {
+  position: fixed;
+  top: 0.4em;
+  right: 0.6em;
+  width: 2em;
+  height: 2em;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  color: #000;
+  font-size: 1.6em;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* Buttons, table of contents and call-outs on the BEAST page */
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8em;
+  margin: 1em 0 0.5em;
+}
+
+a.demo-btn {
+  display: inline-block;
+  padding: 0.6em 1.2em;
+  border: 2px solid #157878;
+  border-radius: 0.3rem;
+  background: #157878;
+  color: #fff;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+a.demo-btn:hover {
+  background: #0e5959;
+  border-color: #0e5959;
+  text-decoration: none;
+}
+
+a.demo-btn-light {
+  background: #fff;
+  color: #157878;
+}
+
+a.demo-btn-light:hover {
+  background: #e3f1f1;
+  color: #0e5959;
+}
+
+.toc-box {
+  margin: 0 0 1.5em;
+  padding: 0.3em 1.2em;
+  border: 1px solid #ccc;
+  border-radius: 0.5em;
+  background: #f9f9f9;
+  font-size: 95%;
+}
+
+.toc-box ul {
+  margin-top: 0.3em;
+  margin-bottom: 0.3em;
+}
